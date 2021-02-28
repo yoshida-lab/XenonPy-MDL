@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import json
+
+from typing import Union
 from os import remove
 from pathlib import Path
 from shutil import make_archive, unpack_archive
@@ -25,10 +27,10 @@ def uploadModel(filename,
                 keywords=None,
                 regMetric=None,
                 clsMetric=None,
-                descriptor: str = None,
-                method: str = None,
-                modelset: str = None,
-                property_: str = None,
+                descriptor: Union[str, dict] = None,
+                method: Union[str, dict] = None,
+                modelset: Union[str, dict] = None,
+                property_: Union[str, dict] = None,
                 deprecated=False,
                 succeed=True,
                 training_env=None,
@@ -50,13 +52,25 @@ def uploadModel(filename,
     if clsMetric is not None:
         variables['clsMetric'] = clsMetric
     if property_ is not None:
-        variables['property_'] = {'where': {'name': property_}, 'create': {'name': property_}}
+        if isinstance(property_, str):
+            variables['property_'] = {'where': {'name': property_}, 'create': {'name': property_}}
+        else:
+            variables['property_'] = property_
     if descriptor is not None:
-        variables['descriptor'] = {'where': {'name': descriptor}, 'create': {'name': descriptor}}
+        if isinstance(descriptor, str):
+            variables['descriptor'] = {'where': {'name': descriptor}, 'create': {'name': descriptor}}
+        else:
+            variables['descriptor'] = descriptor
     if method is not None:
-        variables['method'] = {'where': {'name': method}, 'create': {'name': method}}
+        if isinstance(method, str):
+            variables['method'] = {'where': {'name': method}, 'create': {'name': method}}
+        else:
+            variables['method'] = method
     if modelset is not None:
-        variables['modelset'] = {'where': {'name': modelset}, 'create': {'name': modelset}}
+        if isinstance(modelset, str):
+            variables['modelset'] = {'where': {'name': modelset}, 'create': {'name': modelset}}
+        else:
+            variables['modelset'] = modelset
 
     operations = (
         'operations',
@@ -138,7 +152,7 @@ if __name__ == "__main__":
         response = uploadModel(z,
                                keywords='aaa, bbbbb',
                                property_="test.pppp",
-                               modelset="sjf8",
+                               modelset={'where': {"name": 'some set'}, "create": {"name": "some set", "description": "with some description"}},
                                method="test.sdie",
                                url=url,
                                api_key=sys.argv[1])

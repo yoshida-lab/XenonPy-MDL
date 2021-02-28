@@ -971,7 +971,6 @@ input ModelUpsertWithoutArtifactInput {
 }
 
 type ModelUrl {
-  etag: String!
   id: Int!
   url: String!
 }
