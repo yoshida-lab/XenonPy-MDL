@@ -1,0 +1,232 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["createMany"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Artifact {
+  id             Int           @id @default(autoincrement())
+  path           String        @unique
+  etag           String        @unique
+  filename       String
+  organizationId Int?
+  ownerId        Int
+  setId          Int?
+  model          Model?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  owner          User          @relation(fields: [ownerId], references: [id])
+  modelset       Modelset?     @relation(fields: [setId], references: [id])
+
+  @@index([filename], name: "Artifact.file_name")
+}
+
+model ClassificationMetric {
+  id            Int    @id @default(autoincrement())
+  accuracy      Float?
+  precision     Float?
+  recall        Float?
+  f1            Float?
+  sensitivity   Float?
+  prevalence    Float?
+  specificity   Float?
+  ppv           Float?
+  npv           Float?
+  supplementary Json?
+  modelId       Int    @unique
+  model         Model  @relation(fields: [modelId], references: [id])
+
+  @@index([accuracy, precision, recall, f1], name: "ClassificationMetric.main_scores")
+}
+
+model Descriptor {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  ownerId     Int?
+  owner       User?   @relation(fields: [ownerId], references: [id])
+  models      Model[]
+
+  @@index([name, description], name: "Descriptor.search_index")
+}
+
+model Method {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  owner       User?   @relation(fields: [ownerId], references: [id])
+  ownerId     Int?
+  models      Model[]
+
+  @@index([name, description], name: "Method.search_index")
+}
+
+model Model {
+  id           Int                   @id @default(autoincrement())
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @default(now())
+  keywords     String?
+  deprecated   Boolean               @default(false)
+  succeed      Boolean               @default(true)
+  trainingEnv  Json?                 @default("{}")
+  trainingInfo Json?                 @default("{}")
+  download     Int?                  @default(0)
+  descriptorId Int?
+  propertyId   Int?
+  ownerId      Int?
+  methodId     Int?
+  setId        Int?
+  artifactId   Int
+  artifact     Artifact              @relation(fields: [artifactId], references: [id])
+  descriptor   Descriptor?           @relation(fields: [descriptorId], references: [id])
+  method       Method?               @relation(fields: [methodId], references: [id])
+  owner        User?                 @relation(fields: [ownerId], references: [id])
+  property     Property?             @relation(fields: [propertyId], references: [id])
+  modelset     Modelset?             @relation(fields: [setId], references: [id])
+  clsMetric    ClassificationMetric?
+  regMetric    RegressionMetric?
+
+  @@index([keywords], name: "Model.search_index")
+}
+
+model Modelset {
+  id             Int           @id @default(autoincrement())
+  name           String        @unique
+  description    String?
+  keywords       String?
+  private        Boolean       @default(false)
+  sampleCode     String?
+  deprecated     Boolean       @default(false)
+  organizationId Int?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  ownerId        Int?
+  owner          User?         @relation(fields: [ownerId], references: [id])
+  artifacts      Artifact[]
+  models         Model[]
+  contributors   User[]        @relation("ModelSetWithContributor")
+  properties     Property[]    @relation("PropertyToModelset")
+
+  @@index([name, description, keywords], name: "Modelset.search_index")
+}
+
+model Organization {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  description String?
+  ownerId     Int?
+  owner       User?      @relation(fields: [ownerId], references: [id])
+  artifacts   Artifact[]
+  modelsets   Modelset[]
+  members     User[]     @relation("OrganizationWithMember")
+
+  @@index([name, description], name: "Organization.search_index")
+}
+
+model Property {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  description String?
+  symbol      String?
+  unit        String?
+  ownerId     Int?
+  owner       User?      @relation(fields: [ownerId], references: [id])
+  models      Model[]
+  modelsets   Modelset[] @relation("PropertyToModelset")
+
+  @@index([name, description], name: "Property.search_index")
+}
+
+model RegressionMetric {
+  id                  Int    @id @default(autoincrement())
+  meanAbsError        Float?
+  maxAbsError         Float?
+  meanSquareError     Float?
+  rootMeanSquareError Float?
+  r2                  Float?
+  pValue              Float?
+  spearmanCorr        Float?
+  pearsonCorr         Float?
+  supplementary       Json?
+  modelId             Int    @unique
+  model               Model  @relation(fields: [modelId], references: [id])
+
+  @@index([meanAbsError, meanSquareError, pValue, pearsonCorr], name: "RegressionMetric.main_scores")
+}
+
+enum Role {
+  USER
+  MASTER
+  TESTER
+  ADMIN
+}
+
+// next-auth schemas
+model Account {
+  id                 Int       @id @default(autoincrement())
+  compoundId         String    @unique @map(name: "compound_id")
+  userId             Int       @map(name: "user_id")
+  providerType       String    @map(name: "provider_type")
+  providerId         String    @map(name: "provider_id")
+  providerAccountId  String    @map(name: "provider_account_id")
+  refreshToken       String?   @map(name: "refresh_token")
+  accessToken        String?   @map(name: "access_token")
+  accessTokenExpires DateTime? @map(name: "access_token_expires")
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+
+
+  @@index([providerAccountId], name: "providerAccountId")
+  @@index([providerId], name: "providerId")
+  @@index([userId], name: "userId")
+  @@map(name: "accounts")
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @map(name: "user_id")
+  expires      DateTime
+  sessionToken String   @unique @map(name: "session_token")
+  accessToken  String   @unique @map(name: "access_token")
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "sessions")
+}
+
+model User {
+  id                   Int            @id @default(autoincrement())
+  name                 String?
+  email                String?        @unique
+  emailVerified        DateTime?      @map(name: "email_verified")
+  image                String?
+  createdAt            DateTime       @default(now()) @map(name: "created_at")
+  updatedAt            DateTime       @default(now()) @map(name: "updated_at")
+  hashedPW             String?        @unique @map("hashed_pw")
+  apiKey               String?        @unique @map("api_key")
+  role                 Role           @default(USER) @map("role")
+  artifacts            Artifact[]
+  descriptors          Descriptor[]
+  methods              Method[]
+  models               Model[]
+  modelsets            Modelset[]
+  organizations        Organization[]
+  properties           Property[]
+  contributedModelSets Modelset[]     @relation("ModelSetWithContributor")
+  joinedOrganizations  Organization[] @relation("OrganizationWithMember")
+
+  @@map(name: "users")
+}
+
+model VerificationRequest {
+  id         Int      @id @default(autoincrement())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now()) @map(name: "created_at")
+  updatedAt  DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "verification_requests")
+}

@@ -1,0 +1,4 @@
+.next
+prisma-client
+node_modules
+out

@@ -1,0 +1,53 @@
+{
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[sql]": {
+    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+  },
+  "cSpell.words": [
+    "ENTRYPOINT",
+    "Interop",
+    "NEXTAUTH",
+    "Propertys",
+    "antd",
+    "asynciterable",
+    "backgroundcolor",
+    "blueimp",
+    "clsx",
+    "codegen",
+    "compat",
+    "datamodel",
+    "esnext",
+    "etag",
+    "filepath",
+    "graphql",
+    "justifycontent",
+    "jwks",
+    "minio",
+    "modelset",
+    "modelsets",
+    "nginx",
+    "passthrough",
+    "postgres",
+    "preact",
+    "prefetch",
+    "prefresh",
+    "prepass",
+    "prisma",
+    "prismagraphql",
+    "signup",
+    "systemvars",
+    "typegen",
+    "upsert",
+    "urql",
+    "xenonpy",
+    "zeit"
+  ]
+}

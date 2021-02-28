@@ -1,0 +1,9 @@
+/docs/
+/node_modules/
+*.dwarf
+yarn-error.log
+.next/
+/dev_repo/**/*
+!/dev_repo/.gitkeep
+.DS_Store
+.env*.local

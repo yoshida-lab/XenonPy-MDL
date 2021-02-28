@@ -1,0 +1,5 @@
+.vscode
+.next
+yarn.lock
+/node_modules
+/app/.next

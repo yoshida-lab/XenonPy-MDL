@@ -1,0 +1,73 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+      args:
+        # [Choice] Node.js version: 14, 12, 10
+        VARIANT: 14
+        # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
+        USER_UID: 501
+        # USER_GID: 20
+
+    env_file:
+      - ../.env
+      - ../.env.development
+      - ../.env.local
+    volumes:
+      - ..:/workspace:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    network_mode: service:app
+    env_file:
+      - ../.env.local
+    volumes:
+      - minio_store:/data
+    command: server /data
+
+  postgres-db:
+    image: postgres:13-alpine
+    restart: unless-stopped
+    network_mode: service:app
+    env_file:
+      - ../.env.development
+    volumes:
+      - dev_db:/var/lib/postgresql/data
+
+  pgAdmin4:
+    image: dpage/pgadmin4
+    network_mode: service:app
+    restart: unless-stopped
+    env_file:
+      - ../.env.development
+    environment:
+      PGADMIN_LISTEN_ADDRESS: 0.0.0.0
+    volumes:
+      - pgadmin4:/var/lib/pgadmin
+
+volumes:
+  dev_db:
+    driver_opts:
+      type: none
+      device: ./dev_repo/xenon_db
+      o: bind
+
+  minio_store:
+    driver_opts:
+      type: none
+      device: ./dev_repo/model
+      o: bind
+
+  pgadmin4:
+    driver_opts:
+      type: none
+      device: ./dev_repo/pgadmin4
+      o: bind
