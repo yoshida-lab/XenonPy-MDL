@@ -119,8 +119,8 @@ def uploadArtifact(filename, *, url='http://localhost/api', api_key=''):
 # main
 if __name__ == "__main__":
     import sys
-    # url = 'https://xenon.ism.ac.jp/api'
-    url = 'http://localhost:3000/api'
+    url = 'https://xenon.ism.ac.jp/api'
+    # url = 'http://localhost:3000/api'
     p = Path('.')
 
     properties = [p_ for p_ in p.iterdir() if p_.is_dir()]
