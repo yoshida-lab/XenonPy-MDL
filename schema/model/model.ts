@@ -122,7 +122,7 @@ export const Model = objectType({
 export const ModelUrl = objectType({
   name: 'ModelUrl',
   definition(t) {
-    t.string('etag', { nullable: false }), t.string('url', { nullable: false }), t.int('id', { nullable: false })
+    t.string('url', { nullable: false }), t.int('id', { nullable: false })
   }
 })
 
@@ -157,7 +157,6 @@ export const QueryModel = queryField(t => {
           id: true,
           artifact: {
             select: {
-              etag: true,
               path: true
             }
           }
@@ -167,7 +166,7 @@ export const QueryModel = queryField(t => {
       return models.map(s => {
         const { id, artifact } = s
         const url = `${origin}/${process.env.MINIO_MDL_BUCKET || 'mdl'}/${artifact.path}`
-        return { id, url, etag: artifact.etag }
+        return { id, url }
       })
     }
   })

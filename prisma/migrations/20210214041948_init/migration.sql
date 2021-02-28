@@ -194,9 +194,6 @@ CREATE TABLE "_OrganizationWithMember" (
 CREATE UNIQUE INDEX "Artifact.path_unique" ON "Artifact"("path");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Artifact.etag_unique" ON "Artifact"("etag");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Model_artifactId_unique" ON "Model"("artifactId");
 
 -- CreateIndex
