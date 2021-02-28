@@ -20,7 +20,7 @@ COPY --from=build /build/public ./public
 COPY --from=build /build/prisma ./prisma
 COPY --from=build /build/.env ./.env
 COPY --from=build /build/.env.production ./.env.production
-RUN yarn install --production && yarn gen:prisma
+RUN ls -l && yarn install --production && yarn gen:prisma
 
 EXPOSE 3000
 CMD yarn start
