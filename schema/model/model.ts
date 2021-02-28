@@ -242,8 +242,6 @@ export const MutationModel = mutationField(t => {
         // if success
         const { regMetric, clsMetric, deprecated, succeed, training_env, training_info } = remained
         try {
-          console.log(property?.where)
-
           const model = await prisma.model.create({
             data: {
               // scale

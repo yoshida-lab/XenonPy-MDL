@@ -64,9 +64,9 @@ def uploadModel(filename, *, url='http://localhost:3000/api', api_key=''):
                     training_info={'training_info': "haha"},
                     deprecated=True,
                     property={
-                        'where': { 'name': 'test.property1'},
+                        'where': { 'name': 'test.property11'},
                         'create': {
-                            'name': 'test.property1'
+                            'name': 'test.property11'
                         }
                     },
                     descriptor={
@@ -119,7 +119,7 @@ def uploadArtifact(filename, *, url='http://localhost/api', api_key=''):
 # main
 if __name__ == "__main__":
     import sys
-    # url = 'http://xenon.ism.ac.jp/api'
+    # url = 'https://xenon.ism.ac.jp/api'
     url = 'http://localhost:3000/api'
     p = Path('.')
 
