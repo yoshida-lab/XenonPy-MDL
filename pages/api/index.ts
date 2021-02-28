@@ -72,7 +72,7 @@ export default new ApolloServer({
 
   // graphql upload
   uploads: {
-    maxFileSize: 1024 * 1024 * 1024 * 100, // MB
+    maxFileSize: 1024 * 1024 * 1024 * 128, // MB
     maxFiles: 75
   },
 

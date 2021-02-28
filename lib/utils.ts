@@ -22,7 +22,7 @@ import { FieldAuthorizeResolver } from 'nexus/dist/plugins/fieldAuthorizePlugin'
  * in speed of 100,000 IDs per second
  */
 const alphabet = '346789ABCDEFGHJKLMNPQRTUVWXYabcdefghijkmnpqrtwxyz'
-export const keyGenerator = customAlphabet(alphabet, 16)
+export const keyGenerator = customAlphabet(alphabet, 8)
 
 /**
  * generate 5 characters
