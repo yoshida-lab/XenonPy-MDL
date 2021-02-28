@@ -231,7 +231,7 @@ export const MutationModel = mutationField(t => {
       const descriptorName = descriptor?.create?.name || descriptor?.where?.name || 'unknown.descriptor'
       const modelsetName = modelset?.create?.name || modelset?.where?.name || 'unknown.modelset'
       const magic_num = await magicNumGenerator()
-      const path = `${modelsetName.replace(/\s+/g, '.').toLowerCase()}/${propertyName
+      const path = `${modelsetName.replace(/\s+/g, '_').toLowerCase()}/${propertyName
         .replace(/\s+/g, '.')
         .toLowerCase()}/${descriptorName.replace(/\s+/g, '.').toLowerCase()}/${methodName
         .replace(/\s+/g, '.')

@@ -152,7 +152,7 @@ if __name__ == "__main__":
         response = uploadModel(z,
                                keywords='aaa, bbbbb',
                                property_="test.pppp",
-                               modelset={'where': {"name": 'some set'}, "create": {"name": "some set", "description": "with some description"}},
+                               modelset={'where': {"name": 'some other'}, "create": {"name": "some other", "description": "other with space description"}},
                                method="test.sdie",
                                url=url,
                                api_key=sys.argv[1])
