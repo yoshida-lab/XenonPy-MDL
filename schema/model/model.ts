@@ -64,52 +64,64 @@ export const Model = objectType({
     t.string('descriptor', {
       description: 'name of descriptor',
       async resolve({ descriptorId }, _args, { prisma }) {
-        const ret = await prisma.descriptor.findUnique({
-          where: { id: descriptorId! },
-          select: {
-            name: true
-          }
-        })
-        return removeNulls(ret?.name)
+        if (Boolean(descriptorId)) {
+          const ret = await prisma.descriptor.findUnique({
+            where: { id: descriptorId! },
+            select: {
+              name: true
+            }
+          })
+          return removeNulls(ret?.name)
+        }
+        return undefined
       }
     })
 
     t.string('method', {
       description: 'name of method',
       async resolve({ methodId }, _args, { prisma }) {
-        const ret = await prisma.method.findUnique({
-          where: { id: methodId! },
-          select: {
-            name: true
-          }
-        })
-        return removeNulls(ret?.name)
+        if (Boolean(methodId)) {
+          const ret = await prisma.method.findUnique({
+            where: { id: methodId! },
+            select: {
+              name: true
+            }
+          })
+          return removeNulls(ret?.name)
+        }
+        return undefined
       }
     })
 
     t.string('property', {
       description: 'name of property',
       async resolve({ propertyId }, _args, { prisma }) {
-        const ret = await prisma.property.findUnique({
-          where: { id: propertyId! },
-          select: {
-            name: true
-          }
-        })
-        return removeNulls(ret?.name)
+        if (Boolean(propertyId)) {
+          const ret = await prisma.property.findUnique({
+            where: { id: propertyId! },
+            select: {
+              name: true
+            }
+          })
+          return removeNulls(ret?.name)
+        }
+        return undefined
       }
     })
 
     t.string('modelset', {
       description: 'name of modelset',
       async resolve({ setId }, _args, { prisma }) {
-        const ret = await prisma.modelset.findUnique({
-          where: { id: setId! },
-          select: {
-            name: true
-          }
-        })
-        return removeNulls(ret?.name)
+        if (Boolean(setId)) {
+          const ret = await prisma.modelset.findUnique({
+            where: { id: setId! },
+            select: {
+              name: true
+            }
+          })
+          return removeNulls(ret?.name)
+        }
+        return undefined
       }
     })
   }
@@ -134,12 +146,25 @@ export const QueryModel = queryField(t => {
   t.crud.models({
     filtering: true,
     ordering: true,
-    pagination: true
+    pagination: true,
+    complexity: 2,
+    computedInputs: {
+      private: async () => ({
+        equals: false
+      })
+    }
+    // resolve: async (root, args, ctx, info, originalResolve) => {
+    //   console.log('logic before the resolver')
+    //   console.log(JSON.stringify(args))
+    //   const res = await originalResolve(root, args, ctx, info)
+    //   console.log('logic after the resolver')
+    //   return res
+    // }
   })
 
   t.field('getModelUrls', {
     type: ModelUrl,
-    list: [true],
+    list: true,
     args: {
       ids: arg({ type: nonNull(list(nonNull('Int'))), description: 'id of Models' })
     },
@@ -183,6 +208,10 @@ export const QueryModel = queryField(t => {
   })
 })
 
+/**
+ * Filename with suffix
+ * @param filename filename
+ */
 const splitFilename = (filename: string) => {
   const extensionList = ['.tar.gz', '.tar.bz2', '.zip', '.7z', '.gzip', '.bz2']
 
@@ -192,6 +221,14 @@ const splitFilename = (filename: string) => {
     }
   }
   throw new Error(`uploaded file must be compressed in ${extensionList}`)
+}
+
+/**
+ * Check uploadModel input
+ * @param obj any input object
+ */
+const isValidated = (obj?: any) => {
+  return obj && Object.keys(obj).length !== 0
 }
 
 export const MutationModel = mutationField(t => {
@@ -223,10 +260,19 @@ export const MutationModel = mutationField(t => {
       training_info: arg({ type: 'Json' })
     },
     authorize: anyNormalUser, // any normal user can upload models
-    async resolve(_parent, { artifact, keywords, property, ...remained }, { minio, uid, prisma }) {
+    async resolve(
+      _parent,
+      { artifact, keywords, property, regMetric, clsMetric, ...remained },
+      { minio, uid, prisma }
+    ) {
       // check keywords and property
       if (!keywords && !property) {
-        throw new ApolloError('upload failed. user have to provide at least one keywords or property object')
+        throw new ApolloError('upload failed. user have to provide at least one of keywords or property')
+      }
+
+      // regMetric and clsMetric are mutually exclusive
+      if (regMetric && clsMetric) {
+        throw new ApolloError('upload failed. regMetric and clsMetric are mutually exclusive')
       }
 
       /* upload artifact to MinIO */
@@ -254,7 +300,7 @@ export const MutationModel = mutationField(t => {
 
       if (etag) {
         // if success
-        const { regMetric, clsMetric, deprecated, succeed, training_env, training_info } = remained
+        const { deprecated, succeed, training_env, training_info } = remained
         try {
           const model = await prisma.model.create({
             data: {
@@ -268,9 +314,10 @@ export const MutationModel = mutationField(t => {
               trainingEnv: removeNulls(training_env),
               trainingInfo: removeNulls(training_info),
 
-              // create
-              regMetric: { create: { ...regMetric } },
-              clsMetric: { create: { ...clsMetric } },
+              // creation
+              // be care that we should not assign metrics when they are null
+              regMetric: isValidated(regMetric) ? { create: { ...regMetric } } : undefined,
+              clsMetric: isValidated(clsMetric) ? { create: { ...clsMetric } } : undefined,
               artifact: {
                 create: {
                   etag,
@@ -280,8 +327,10 @@ export const MutationModel = mutationField(t => {
                 }
               },
 
-              // TODO: if where matched nothing and creating throw errors, the uploading failed
-              // That not an error, but can be improved for user-friendly
+              /**
+               * TODO: if where matched nothing and creating throw errors, the uploading failed
+               * This not an error, but should be improved for user-friendly
+               */
               property: {
                 connectOrCreate: removeNulls(property)
               },

@@ -30,15 +30,14 @@ export const RegressionMetric = objectType({
     )
   },
   definition(t) {
-    t.model.id()
     t.model.maxAbsError()
     t.model.meanAbsError()
     t.model.meanSquareError()
-    t.model.pValue()
-    t.model.pearsonCorr()
-    t.model.r2()
     t.model.rootMeanSquareError()
+    t.model.r2()
+    t.model.pValue()
     t.model.spearmanCorr()
+    t.model.pearsonCorr()
     t.model.supplementary()
   }
 })
@@ -52,20 +51,20 @@ export const RegressionMetricCreateWithModel = inputObjectType({
     t.float('maxAbsError')
     t.float('meanAbsError')
     t.float('meanSquareError')
+    t.float('rootMeanSquareError')
+    t.float('r2')
     t.float('pValue')
     t.float('pearsonCorr')
-    t.float('r2')
-    t.float('rootMeanSquareError')
     t.float('spearmanCorr')
     t.field('supplementary', { type: 'Json' })
   }
 })
 
-export const QueryRegressionMetric = queryField(t => {
-  t.crud.regressionMetric()
-  t.crud.regressionMetrics({
-    pagination: true,
-    filtering: true,
-    ordering: true
-  })
-})
+// export const QueryRegressionMetric = queryField(t => {
+//   t.crud.regressionMetric()
+//   t.crud.regressionMetrics({
+//     pagination: true,
+//     filtering: true,
+//     ordering: true
+//   })
+// })

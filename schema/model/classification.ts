@@ -20,6 +20,7 @@ export const ClassificationMetric = objectType({
   isTypeOf(data) {
     return Boolean(
       (data as CM).f1 ||
+        (data as CM).accuracy ||
         (data as CM).npv ||
         (data as CM).ppv ||
         (data as CM).precision ||
@@ -30,15 +31,15 @@ export const ClassificationMetric = objectType({
     )
   },
   definition(t) {
-    t.model.id()
-    t.model.f1()
-    t.model.npv()
-    t.model.ppv()
+    t.model.accuracy()
     t.model.precision()
-    t.model.prevalence()
     t.model.recall()
+    t.model.f1()
     t.model.sensitivity()
+    t.model.prevalence()
     t.model.specificity()
+    t.model.ppv()
+    t.model.npv()
     t.model.supplementary()
   }
 })
@@ -50,23 +51,23 @@ export const ClassificationMetricCreateWithModel = inputObjectType({
   name: 'ClassificationMetricCreateWithModel',
   definition(t) {
     t.float('accuracy')
+    t.float('precision')
+    t.float('recall')
     t.float('f1')
+    t.float('sensitivity')
+    t.float('prevalence')
+    t.float('specificity')
     t.float('npv')
     t.float('ppv')
-    t.float('precision')
-    t.float('prevalence')
-    t.float('recall')
-    t.float('sensitivity')
-    t.float('specificity')
     t.field('supplementary', { type: 'Json' })
   }
 })
 
-export const QueryClassificationMetric = queryField(t => {
-  t.crud.classificationMetric()
-  t.crud.classificationMetrics({
-    pagination: true,
-    filtering: true,
-    ordering: true
-  })
-})
+// export const QueryClassificationMetric = queryField(t => {
+//   t.crud.classificationMetric()
+//   t.crud.classificationMetrics({
+//     pagination: true,
+//     filtering: true,
+//     ordering: true
+//   })
+// })

@@ -50,5 +50,5 @@
     "xenonpy",
     "zeit"
   ],
-  "python.pythonPath": "/usr/local/Caskroom/miniconda/base/envs/py37/bin/python"
+  "python.pythonPath": "/usr/bin/python3"
 }

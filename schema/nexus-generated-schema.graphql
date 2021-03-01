@@ -298,8 +298,8 @@ input BoolFilter {
 }
 
 type ClassificationMetric {
+  accuracy: Float
   f1: Float
-  id: Int!
   npv: Float
   ppv: Float
   precision: Float
@@ -2205,14 +2205,12 @@ type Query {
   apiVersion: String!
   artifact(where: ArtifactWhereUniqueInput!): Artifact
   artifacts(after: ArtifactWhereUniqueInput, before: ArtifactWhereUniqueInput, first: Int, last: Int, where: ArtifactWhereInput): [Artifact!]!
-  classificationMetric(where: ClassificationMetricWhereUniqueInput!): ClassificationMetric
-  classificationMetrics(after: ClassificationMetricWhereUniqueInput, before: ClassificationMetricWhereUniqueInput, first: Int, last: Int, orderBy: [ClassificationMetricOrderByInput!], where: ClassificationMetricWhereInput): [ClassificationMetric!]!
   descriptor(where: DescriptorWhereUniqueInput!): Descriptor
   descriptors(after: DescriptorWhereUniqueInput, before: DescriptorWhereUniqueInput, first: Int, last: Int, orderBy: [QueryDescriptorsOrderByInput!], where: QueryDescriptorsWhereInput): [Descriptor!]!
   getModelUrls(
     """id of Models"""
     ids: [Int!]!
-  ): [ModelUrl!]
+  ): [ModelUrl]
   method(where: MethodWhereUniqueInput!): Method
   methods(after: MethodWhereUniqueInput, before: MethodWhereUniqueInput, first: Int, last: Int, orderBy: [QueryMethodsOrderByInput!], where: QueryMethodsWhereInput): [Method!]!
   model(where: ModelWhereUniqueInput!): Model
@@ -2221,8 +2219,6 @@ type Query {
   organizations(after: OrganizationWhereUniqueInput, before: OrganizationWhereUniqueInput, first: Int, last: Int, orderBy: [QueryOrganizationsOrderByInput!], where: QueryOrganizationsWhereInput): [Organization!]!
   properties(after: PropertyWhereUniqueInput, before: PropertyWhereUniqueInput, first: Int, last: Int, orderBy: [QueryPropertiesOrderByInput!], where: QueryPropertiesWhereInput): [Property!]!
   property(where: PropertyWhereUniqueInput!): Property
-  regressionMetric(where: RegressionMetricWhereUniqueInput!): RegressionMetric
-  regressionMetrics(after: RegressionMetricWhereUniqueInput, before: RegressionMetricWhereUniqueInput, first: Int, last: Int, orderBy: [RegressionMetricOrderByInput!], where: RegressionMetricWhereInput): [RegressionMetric!]!
   user(where: UserWhereUniqueInput!): User
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, where: QueryUsersWhereInput): [User!]!
 }
@@ -2280,7 +2276,6 @@ input QueryUsersWhereInput {
 }
 
 type RegressionMetric {
-  id: Int!
   maxAbsError: Float
   meanAbsError: Float
   meanSquareError: Float

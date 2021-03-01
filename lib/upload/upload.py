@@ -154,6 +154,8 @@ if __name__ == "__main__":
                                property_="test.pppp",
                                modelset={'where': {"name": 'some other'}, "create": {"name": "some other", "description": "other with space description"}},
                                method="test.sdie",
+                            #    regMetric={"meanAbsError": 0.2},
+                               clsMetric={},
                                url=url,
                                api_key=sys.argv[1])
         # response = uploadArtifact(z, url=url, api_key=sys.argv[1])
