@@ -45,4 +45,17 @@ const client = new Client({
 // }
 // `
 
+// init minio client
+// guarantee the root bucket 'mdl' has public download permission
+const bucket = process.env.MINIO_MDL_BUCKET ?? 'mdl'
+
+client.bucketExists(bucket, (err, exists) => {
+  if (err) throw new Error(err.message)
+  if (!exists) {
+    client.makeBucket(bucket, 'us-east-1').catch(err => {
+      throw new Error(err)
+    })
+  }
+})
+
 export default client
