@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["createMany"]
+  previewFeatures = ["createMany", "orderByRelation"]
 }
 
 datasource db {
@@ -73,7 +73,7 @@ model Model {
   succeed      Boolean               @default(true)
   trainingEnv  Json?                 @default("{}")
   trainingInfo Json?                 @default("{}")
-  download     Int?                  @default(0)
+  downloads    Int?                  @default(0)
   descriptorId Int?
   propertyId   Int?
   ownerId      Int?

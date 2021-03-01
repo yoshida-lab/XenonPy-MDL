@@ -862,7 +862,7 @@ type Model {
 
   """name of descriptor"""
   descriptor: String
-  download: Int
+  downloads: Int
   id: Int!
 
   """keywords split by comma or white space"""
@@ -900,7 +900,7 @@ input ModelCreateWithoutArtifactInput {
   createdAt: DateTime
   deprecated: Boolean
   descriptor: DescriptorCreateNestedOneWithoutModelsInput
-  download: Int
+  downloads: Int
   keywords: String
   method: MethodCreateNestedOneWithoutModelsInput
   modelset: ModelsetCreateNestedOneWithoutModelsInput
@@ -920,7 +920,7 @@ input ModelOrderByInput {
   deprecated: SortOrder
   descriptor: DescriptorOrderByInput
   descriptorId: SortOrder
-  download: SortOrder
+  downloads: SortOrder
   id: SortOrder
   keywords: SortOrder
   method: MethodOrderByInput
@@ -952,7 +952,7 @@ input ModelUpdateWithoutArtifactInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   deprecated: BoolFieldUpdateOperationsInput
   descriptor: DescriptorUpdateOneWithoutModelsInput
-  download: NullableIntFieldUpdateOperationsInput
+  downloads: NullableIntFieldUpdateOperationsInput
   keywords: NullableStringFieldUpdateOperationsInput
   method: MethodUpdateOneWithoutModelsInput
   modelset: ModelsetUpdateOneWithoutModelsInput
@@ -985,7 +985,7 @@ input ModelWhereInput {
   deprecated: BoolFilter
   descriptor: DescriptorWhereInput
   descriptorId: IntNullableFilter
-  download: IntNullableFilter
+  downloads: IntNullableFilter
   id: IntFilter
   keywords: StringNullableFilter
   method: MethodWhereInput

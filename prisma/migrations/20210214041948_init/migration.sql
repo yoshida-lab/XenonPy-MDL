@@ -58,7 +58,7 @@ CREATE TABLE "Model" (
     "succeed" BOOLEAN NOT NULL DEFAULT true,
     "trainingEnv" JSONB DEFAULT '{}',
     "trainingInfo" JSONB DEFAULT '{}',
-    "download" INTEGER DEFAULT 0,
+    "downloads" INTEGER DEFAULT 0,
     "artifactId" INTEGER NOT NULL,
     "descriptorId" INTEGER,
     "propertyId" INTEGER,

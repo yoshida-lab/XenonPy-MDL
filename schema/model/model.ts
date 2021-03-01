@@ -43,7 +43,7 @@ export const Model = objectType({
     t.model.succeed()
     t.model.trainingEnv()
     t.model.trainingInfo()
-    t.model.download()
+    t.model.downloads()
     t.model.owner()
 
     t.field('metrics', {
@@ -172,7 +172,7 @@ export const QueryModel = queryField(t => {
       await prisma.model.updateMany({
         where: { id: { in: ids } },
         data: {
-          download: { increment: 1 }
+          downloads: { increment: 1 }
         }
       })
       const models = await prisma.model.findMany({
