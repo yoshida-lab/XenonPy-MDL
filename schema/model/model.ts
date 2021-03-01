@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import absoluteUrl from 'next-absolute-url'
 import { ApolloError } from 'apollo-server-micro'
 import { queryField, objectType, unionType, mutationField, arg, booleanArg, stringArg, list, nonNull } from 'nexus'
 import { anyNormalUser, magicNumGenerator, removeNulls } from '../../lib/utils'
@@ -140,11 +139,11 @@ export const QueryModel = queryField(t => {
 
   t.field('getModelUrls', {
     type: ModelUrl,
-    list: true,
+    list: [true],
     args: {
       ids: arg({ type: nonNull(list(nonNull('Int'))), description: 'id of Models' })
     },
-    async resolve(_parent, { ids }, { prisma, req }) {
+    async resolve(_parent, { ids }, { prisma, minio }) {
       await prisma.model.updateMany({
         where: { id: { in: ids } },
         data: {
@@ -162,12 +161,24 @@ export const QueryModel = queryField(t => {
           }
         }
       })
-      const { origin } = absoluteUrl(req)
-      return models.map(s => {
-        const { id, artifact } = s
-        const url = `${origin}/${process.env.MINIO_MDL_BUCKET || 'mdl'}/${artifact.path}`
-        return { id, url }
-      })
+
+      return Promise.all(
+        models.map(async s => {
+          const { id, artifact } = s
+          const signedUrl = await minio.presignedGetObject(process.env.MINIO_MDL_BUCKET ?? 'mdl', artifact.path) // expires in 7 days
+          if (process.env.NODE_ENV === 'production') {
+            const base_url = new URL(process.env.BASE_URL ?? 'http://localhost:3000')
+            const temp_url = new URL(signedUrl)
+            // replace internal host with external
+            base_url.pathname = temp_url.pathname
+            base_url.search = temp_url.search
+
+            return { id, url: base_url.href }
+          }
+
+          return { id, url: signedUrl }
+        })
+      )
     }
   })
 })

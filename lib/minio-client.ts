@@ -22,51 +22,27 @@ const client = new Client({
   secretKey: process.env.MINIO_SECRET_KEY || ''
 })
 
-const bucket = process.env.MINIO_MDL_BUCKET || 'mdl'
-const policy = `
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": [
-          "*"
-        ]
-      },
-      "Resource": [
-        "arn:aws:s3:::mdl/*"
-      ],
-      "Sid": ""
-    }
-  ]
-}
-`
-
-// init minio client
-// guarantee the root bucket 'mdl' has public download premission
-client.bucketExists(bucket, (err, exists) => {
-  if (err) throw new Error(err.message)
-  if (!exists) {
-    client
-      .makeBucket(bucket, 'us-east-1')
-      .then(() => {
-        client.setBucketPolicy(bucket, policy).catch(err => {
-          throw new Error(err)
-        })
-      })
-      .catch(err => {
-        throw new Error(err)
-      })
-  } else {
-    // eslint-disable-next-line no-shadow
-    client.setBucketPolicy(bucket, policy).catch(err => {
-      throw new Error(err)
-    })
-  }
-})
+// const policy = `
+// {
+//   "Version": "2012-10-17",
+//   "Statement": [
+//     {
+//       "Action": [
+//         "s3:GetObject"
+//       ],
+//       "Effect": "Allow",
+//       "Principal": {
+//         "AWS": [
+//           "*"
+//         ]
+//       },
+//       "Resource": [
+//         "arn:aws:s3:::mdl/*"
+//       ],
+//       "Sid": ""
+//     }
+//   ]
+// }
+// `
 
 export default client

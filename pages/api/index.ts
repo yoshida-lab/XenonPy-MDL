@@ -68,7 +68,7 @@ export default new ApolloServer({
   },
 
   // graphql playground
-  playground: process.env.NODE_ENV === 'development',
+  playground: Boolean(process.env.GRAPHQL_PLAYGROUND) || process.env.NODE_ENV === 'development',
 
   // graphql upload
   uploads: {

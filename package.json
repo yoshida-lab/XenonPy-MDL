@@ -1,6 +1,6 @@
 {
   "name": "@xenonpy/mdl",
-  "version": "0.3.0-dev.1",
+  "version": "0.3.0-dev.2",
   "private": true,
   "repository": "git@gitlab.com:TsumiNa/xenonpy_mdl.git",
   "author": "TsumiNa <liu.chang.1865@gmail.com>",
@@ -55,7 +55,6 @@
     "minio": "^7.0.18",
     "nanoid": "^3.1.20",
     "next": "^10.0.7",
-    "next-absolute-url": "^1.2.2",
     "next-auth": "^3.6.0",
     "next-urql": "^3.0.0",
     "nexus": "^1.0.0",
