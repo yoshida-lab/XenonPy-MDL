@@ -14,11 +14,12 @@
 
 import { ApolloServer } from 'apollo-server-micro'
 import { getSession } from 'next-auth/client'
-import { Context } from './context'
+import { IncomingMessage } from 'http'
+import Cors from 'micro-cors'
+
 import prisma from '../../lib/prisma'
 import minio from '../../lib/minio-client'
-import { IncomingMessage } from 'http'
-
+import { Context } from './context'
 import { schema } from '../../schema'
 
 // expose the to config api behaviour in nextjs
@@ -40,9 +41,16 @@ type Config = {
 }
 
 /**
+ * Allow CORS
+ */
+const cors = Cors({
+  allowMethods: ['POST', 'OPTIONS']
+})
+
+/**
  * Apollo graphQL server
  */
-export default new ApolloServer({
+const handler = new ApolloServer({
   async context({ req }: { req: IncomingMessage }): Promise<Context> {
     const apiKey = req?.headers['x-api-key']
 
@@ -81,3 +89,5 @@ export default new ApolloServer({
 }).createHandler({
   path: '/api'
 })
+
+export default cors(handler)
