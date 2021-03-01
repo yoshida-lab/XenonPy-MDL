@@ -296,62 +296,60 @@ export const MutationModel = mutationField(t => {
 
       // upload
       const stream = createReadStream()
-      const etag = await minio.putObject(process.env.MINIO_MDL_BUCKET || 'mdl', path, stream)
+      try {
+        const etag = await minio.putObject(process.env.MINIO_MDL_BUCKET || 'mdl', path, stream)
 
-      if (etag) {
         // if success
         const { deprecated, succeed, training_env, training_info } = remained
-        try {
-          const model = await prisma.model.create({
-            data: {
-              // scale
-              owner: {
-                connect: { id: uid }
-              },
-              deprecated: removeNulls(deprecated),
-              succeed: removeNulls(succeed),
-              keywords,
-              trainingEnv: removeNulls(training_env),
-              trainingInfo: removeNulls(training_info),
+        const model = await prisma.model.create({
+          data: {
+            // scale
+            owner: {
+              connect: { id: uid }
+            },
+            deprecated: removeNulls(deprecated),
+            succeed: removeNulls(succeed),
+            keywords,
+            trainingEnv: removeNulls(training_env),
+            trainingInfo: removeNulls(training_info),
 
-              // creation
-              // be care that we should not assign metrics when they are null
-              regMetric: isValidated(regMetric) ? { create: { ...regMetric } } : undefined,
-              clsMetric: isValidated(clsMetric) ? { create: { ...clsMetric } } : undefined,
-              artifact: {
-                create: {
-                  etag,
-                  path,
-                  filename,
-                  ownerId: uid!
-                }
-              },
-
-              /**
-               * TODO: if where matched nothing and creating throw errors, the uploading failed
-               * This not an error, but should be improved for user-friendly
-               */
-              property: {
-                connectOrCreate: removeNulls(property)
-              },
-              descriptor: {
-                connectOrCreate: removeNulls(descriptor)
-              },
-              method: {
-                connectOrCreate: removeNulls(method)
-              },
-              modelset: {
-                connectOrCreate: removeNulls(modelset)
+            // creation
+            // be care that we should not assign metrics when they are null
+            regMetric: isValidated(regMetric) ? { create: { ...regMetric } } : undefined,
+            clsMetric: isValidated(clsMetric) ? { create: { ...clsMetric } } : undefined,
+            artifact: {
+              create: {
+                etag,
+                path,
+                filename,
+                ownerId: uid!
               }
+            },
+
+            /**
+             * TODO: if where matched nothing and creating throw errors, the uploading failed
+             * This not an error, but should be improved for user-friendly
+             */
+            property: {
+              connectOrCreate: removeNulls(property)
+            },
+            descriptor: {
+              connectOrCreate: removeNulls(descriptor)
+            },
+            method: {
+              connectOrCreate: removeNulls(method)
+            },
+            modelset: {
+              connectOrCreate: removeNulls(modelset)
             }
-          })
-          return model
-        } catch (e) {
-          await minio.removeObject(process.env.MINIO_MDL_BUCKET || 'mdl', path)
-          throw e
-        }
+          }
+        })
+        return model
+      } catch (err) {
+        console.error(err.message)
+        await minio.removeObject(process.env.MINIO_MDL_BUCKET || 'mdl', path)
+        throw new ApolloError(`Error occurred in artifact uploading: ${err.message}`)
       }
-      throw new ApolloError('Error occurred in artifact uploading')
     }
   })
 })
