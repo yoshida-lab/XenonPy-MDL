@@ -148,18 +148,19 @@ export const QueryModel = queryField(t => {
     ordering: true,
     pagination: true,
     complexity: 2,
+    // TODO: check private logic
     computedInputs: {
       private: async () => ({
         equals: false
       })
+    },
+    resolve: async (root, args, ctx, info, originalResolve) => {
+      console.log('logic before the resolver')
+      console.log(JSON.stringify(args))
+      const res = await originalResolve(root, args, ctx, info)
+      console.log('logic after the resolver')
+      return res
     }
-    // resolve: async (root, args, ctx, info, originalResolve) => {
-    //   console.log('logic before the resolver')
-    //   console.log(JSON.stringify(args))
-    //   const res = await originalResolve(root, args, ctx, info)
-    //   console.log('logic after the resolver')
-    //   return res
-    // }
   })
 
   t.field('getModelUrls', {
