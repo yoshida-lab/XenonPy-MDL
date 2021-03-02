@@ -35,9 +35,7 @@ export const Query = queryField(t => {
       id: true,
       name: true
     },
-    filtering: {
-      name: true,
-      description: true
-    }
+    // TODO: using filtering still have some bugs, active all until new plug-in's release
+    filtering: true
   })
 })

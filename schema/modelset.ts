@@ -31,24 +31,21 @@ export const Modelset = objectType({
     t.model.artifacts()
     t.model.contributors()
     t.model.models({
+      complexity: 2,
       pagination: true,
       ordering: {
         id: true,
-        ownerId: true,
         createdAt: true,
         updatedAt: true,
         keywords: true,
+        modelset: true,
         property: true,
         method: true,
-        descriptor: true
+        descriptor: true,
+        clsMetric: true,
+        regMetric: true
       },
-      filtering: {
-        ownerId: true,
-        keywords: true,
-        property: true,
-        method: true,
-        descriptor: true
-      }
+      filtering: true
     })
     t.int('modelCounts', {
       description: 'number of models',
@@ -59,6 +56,19 @@ export const Modelset = objectType({
       }
     })
   }
+})
+
+export const Query = queryField(t => {
+  t.crud.modelset()
+  t.crud.modelsets({
+    pagination: true,
+    ordering: {
+      id: true,
+      name: true
+    },
+    // TODO: using filtering still have some bugs, active all until new plug-in's release
+    filtering: true
+  })
 })
 
 export const Mutation = mutationField(t => {

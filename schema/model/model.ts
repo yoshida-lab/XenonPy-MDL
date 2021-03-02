@@ -144,7 +144,21 @@ export const QueryModel = queryField(t => {
   // private models should be protected
   t.crud.model()
   t.crud.models({
-    filtering: true,
+    filtering: {
+      keywords: true,
+      deprecated: true,
+      succeed: true,
+      property: true,
+      propertyId: true,
+      descriptor: true,
+      descriptorId: true,
+      method: true,
+      methodId: true,
+      modelset: true,
+      setId: true,
+      clsMetric: true,
+      regMetric: true
+    },
     ordering: true,
     pagination: true,
     complexity: 2,

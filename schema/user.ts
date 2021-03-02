@@ -31,7 +31,20 @@ export const User = objectType({
     t.model.descriptors()
     t.model.models({
       complexity: 2,
-      pagination: true
+      pagination: true,
+      ordering: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        keywords: true,
+        modelset: true,
+        property: true,
+        method: true,
+        descriptor: true,
+        clsMetric: true,
+        regMetric: true
+      },
+      filtering: true
     })
 
     t.int('modelCounts', {

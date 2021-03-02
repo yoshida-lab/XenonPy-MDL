@@ -24,18 +24,21 @@ export const Descriptor = objectType({
     t.model.name()
     t.model.description()
     t.model.models({
+      complexity: 2,
       pagination: true,
       ordering: {
         id: true,
-        ownerId: true,
         createdAt: true,
         updatedAt: true,
-        keywords: true
+        keywords: true,
+        modelset: true,
+        property: true,
+        method: true,
+        descriptor: true,
+        clsMetric: true,
+        regMetric: true
       },
-      filtering: {
-        ownerId: true,
-        keywords: true
-      }
+      filtering: true
     })
     t.int('modelCounts', {
       description: 'number of models',
@@ -56,10 +59,8 @@ export const Query = queryField(t => {
       id: true,
       name: true
     },
-    filtering: {
-      name: true,
-      description: true
-    }
+    // TODO: using filtering still have some bugs, active all until new plug-in's release
+    filtering: true
   })
 })
 
