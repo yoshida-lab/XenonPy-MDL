@@ -19,11 +19,12 @@ import Copyright from './Copyright'
 type Props = {
   children: ReactNode
   apiVersion?: string
+  modelCounts?: number
 }
 
-export const Layout: React.FC<Props> = ({ apiVersion, children }) => (
+export const Layout: React.FC<Props> = ({ apiVersion, modelCounts, children }) => (
   <div>
-    <Header apiVersion={apiVersion} />
+    <Header apiVersion={apiVersion} modelCounts={modelCounts} />
     <div className="layout">{children}</div>
     <Copyright />
     <style jsx global>{`

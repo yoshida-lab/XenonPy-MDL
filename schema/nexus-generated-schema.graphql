@@ -351,7 +351,6 @@ input ClassificationMetricOrderByInput {
   accuracy: SortOrder
   f1: SortOrder
   id: SortOrder
-  modelId: SortOrder
   npv: SortOrder
   ppv: SortOrder
   precision: SortOrder
@@ -398,7 +397,6 @@ input ClassificationMetricWhereInput {
   f1: FloatNullableFilter
   id: IntFilter
   model: ModelWhereInput
-  modelId: IntFilter
   npv: FloatNullableFilter
   ppv: FloatNullableFilter
   precision: FloatNullableFilter
@@ -411,7 +409,14 @@ input ClassificationMetricWhereInput {
 
 input ClassificationMetricWhereUniqueInput {
   id: Int
-  modelId: Int
+}
+
+"""Statistic information of current database"""
+type DBStatistic {
+  all: Int
+  classificationModels: Int
+  others: Int
+  regressionModels: Int
 }
 
 """
@@ -916,6 +921,7 @@ input ModelOrderByInput {
   artifact: ArtifactOrderByInput
   artifactId: SortOrder
   clsMetric: ClassificationMetricOrderByInput
+  clsMetricId: SortOrder
   createdAt: SortOrder
   deprecated: SortOrder
   descriptor: DescriptorOrderByInput
@@ -930,6 +936,7 @@ input ModelOrderByInput {
   property: PropertyOrderByInput
   propertyId: SortOrder
   regMetric: RegressionMetricOrderByInput
+  regMetricId: SortOrder
   setId: SortOrder
   succeed: SortOrder
   trainingEnv: SortOrder
@@ -981,6 +988,7 @@ input ModelWhereInput {
   artifact: ArtifactWhereInput
   artifactId: IntFilter
   clsMetric: ClassificationMetricWhereInput
+  clsMetricId: IntNullableFilter
   createdAt: DateTimeFilter
   deprecated: BoolFilter
   descriptor: DescriptorWhereInput
@@ -995,6 +1003,7 @@ input ModelWhereInput {
   property: PropertyWhereInput
   propertyId: IntNullableFilter
   regMetric: RegressionMetricWhereInput
+  regMetricId: IntNullableFilter
   setId: IntNullableFilter
   succeed: BoolFilter
   trainingEnv: JsonNullableFilter
@@ -1003,7 +1012,9 @@ input ModelWhereInput {
 }
 
 input ModelWhereUniqueInput {
+  clsMetricId: Int
   id: Int
+  regMetricId: Int
 }
 
 type Modelset {
@@ -2219,6 +2230,9 @@ type Query {
   organizations(after: OrganizationWhereUniqueInput, before: OrganizationWhereUniqueInput, first: Int, last: Int, orderBy: [QueryOrganizationsOrderByInput!], where: QueryOrganizationsWhereInput): [Organization!]!
   properties(after: PropertyWhereUniqueInput, before: PropertyWhereUniqueInput, first: Int, last: Int, orderBy: [QueryPropertiesOrderByInput!], where: QueryPropertiesWhereInput): [Property!]!
   property(where: PropertyWhereUniqueInput!): Property
+
+  """Number of all models"""
+  statistic: DBStatistic!
   user(where: UserWhereUniqueInput!): User
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, where: QueryUsersWhereInput): [User!]!
 }
@@ -2327,7 +2341,6 @@ input RegressionMetricOrderByInput {
   maxAbsError: SortOrder
   meanAbsError: SortOrder
   meanSquareError: SortOrder
-  modelId: SortOrder
   pValue: SortOrder
   pearsonCorr: SortOrder
   r2: SortOrder
@@ -2372,7 +2385,6 @@ input RegressionMetricWhereInput {
   meanAbsError: FloatNullableFilter
   meanSquareError: FloatNullableFilter
   model: ModelWhereInput
-  modelId: IntFilter
   pValue: FloatNullableFilter
   pearsonCorr: FloatNullableFilter
   r2: FloatNullableFilter
@@ -2383,7 +2395,6 @@ input RegressionMetricWhereInput {
 
 input RegressionMetricWhereUniqueInput {
   id: Int
-  modelId: Int
 }
 
 enum Role {

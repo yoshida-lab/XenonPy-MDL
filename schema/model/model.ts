@@ -49,14 +49,14 @@ export const Model = objectType({
     t.field('metrics', {
       type: 'Metric',
       async resolve({ id }, _args, { prisma }) {
-        return (
-          (await prisma.classificationMetric.findUnique({
-            where: { modelId: id }
-          })) ||
-          (await prisma.regressionMetric.findUnique({
-            where: { modelId: id }
-          }))
-        )
+        const metrics = await prisma.model.findUnique({
+          where: { id },
+          select: {
+            regMetric: true,
+            clsMetric: true
+          }
+        })
+        return metrics?.clsMetric || metrics?.regMetric || null
       }
     })
 

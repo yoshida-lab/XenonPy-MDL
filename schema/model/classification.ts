@@ -62,12 +62,3 @@ export const ClassificationMetricCreateWithModel = inputObjectType({
     t.field('supplementary', { type: 'Json' })
   }
 })
-
-// export const QueryClassificationMetric = queryField(t => {
-//   t.crud.classificationMetric()
-//   t.crud.classificationMetrics({
-//     pagination: true,
-//     filtering: true,
-//     ordering: true
-//   })
-// })

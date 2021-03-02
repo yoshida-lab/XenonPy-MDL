@@ -38,6 +38,14 @@ const API_VERSION = gql`
   }
 `
 
+const DB_Statistic = gql`
+  query DBStatistic {
+    statistic {
+      all
+    }
+  }
+`
+
 export async function getStaticProps() {
   const { client, ssrCache } = initSSUrql()
 
@@ -53,13 +61,15 @@ export async function getStaticProps() {
 }
 
 function Page() {
-  const [res] = useQuery({ query: API_VERSION })
+  const [version] = useQuery({ query: API_VERSION })
+  const [statistic] = useQuery({ query: DB_Statistic })
 
   // SSR or SSG need fetch data on the fly
   // give a default value to escape the error
-  const apiVersion = res.data?.apiVersion ?? 'unknown'
+  const apiVersion = version.data?.apiVersion ?? 'unknown'
+  const modelCounts = statistic.data?.statistic.all ?? 0
   return (
-    <Layout apiVersion={apiVersion}>
+    <Layout apiVersion={apiVersion} modelCounts={modelCounts}>
       <StyledTypography variant="body1">Place holder</StyledTypography>
     </Layout>
   )

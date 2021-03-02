@@ -17,7 +17,7 @@ import { DateTimeResolver, JSONObjectResolver } from 'graphql-scalars'
 import { GraphQLUpload } from 'apollo-server-micro'
 import { nexusPrisma } from 'nexus-plugin-prisma'
 
-import { asNexusMethod, queryType, enumType } from 'nexus'
+import { asNexusMethod, enumType } from 'nexus'
 import {
   makeSchema,
   fieldAuthorizePlugin,
@@ -34,23 +34,11 @@ import * as Modelset from './modelset'
 import * as Organization from './organization'
 import * as Property from './property'
 import * as User from './user'
+import * as Statistic from './statistic'
 
 const JsonScalar = asNexusMethod(JSONObjectResolver, 'json')
 const DateTimeScalar = asNexusMethod(DateTimeResolver, 'date')
 const UploadScalar = asNexusMethod(GraphQLUpload!, 'upload')
-
-/**
- * Query current API version
- */
-const ApiVersion = queryType({
-  definition(t) {
-    t.string('apiVersion', {
-      description: 'The version of currently API',
-      nullable: false,
-      resolve: _ => process.env.API_VERSION!
-    })
-  }
-})
 
 /**
  * Enum for user role
@@ -75,11 +63,11 @@ export const schema = makeSchema({
     Organization,
     Property,
     User,
+    Statistic,
     JsonScalar,
     DateTimeScalar,
     UploadScalar,
-    RoleType,
-    ApiVersion
+    RoleType
   ],
   plugins: [
     fieldAuthorizePlugin({
