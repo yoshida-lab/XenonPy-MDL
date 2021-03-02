@@ -36,8 +36,7 @@ model ClassificationMetric {
   ppv           Float?
   npv           Float?
   supplementary Json?
-  modelId       Int    @unique
-  model         Model  @relation(fields: [modelId], references: [id])
+  model         Model?
 
   @@index([accuracy, precision, recall, f1], name: "ClassificationMetric.main_scores")
 }
@@ -86,8 +85,10 @@ model Model {
   owner        User?                 @relation(fields: [ownerId], references: [id])
   property     Property?             @relation(fields: [propertyId], references: [id])
   modelset     Modelset?             @relation(fields: [setId], references: [id])
-  clsMetric    ClassificationMetric?
-  regMetric    RegressionMetric?
+  clsMetricId  Int?                  @unique
+  regMetricId  Int?                  @unique
+  clsMetric    ClassificationMetric? @relation(fields: [clsMetricId], references: [id])
+  regMetric    RegressionMetric?     @relation(fields: [regMetricId], references: [id])
 
   @@index([keywords], name: "Model.search_index")
 }
@@ -150,8 +151,7 @@ model RegressionMetric {
   spearmanCorr        Float?
   pearsonCorr         Float?
   supplementary       Json?
-  modelId             Int    @unique
-  model               Model  @relation(fields: [modelId], references: [id])
+  model               Model?
 
   @@index([meanAbsError, meanSquareError, pValue, pearsonCorr], name: "RegressionMetric.main_scores")
 }

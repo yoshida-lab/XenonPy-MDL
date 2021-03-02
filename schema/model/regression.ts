@@ -59,12 +59,3 @@ export const RegressionMetricCreateWithModel = inputObjectType({
     t.field('supplementary', { type: 'Json' })
   }
 })
-
-// export const QueryRegressionMetric = queryField(t => {
-//   t.crud.regressionMetric()
-//   t.crud.regressionMetrics({
-//     pagination: true,
-//     filtering: true,
-//     ordering: true
-//   })
-// })

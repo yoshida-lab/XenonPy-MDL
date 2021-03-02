@@ -24,9 +24,10 @@ import { Box, ListItemText, List } from '@material-ui/core'
 
 type Props = {
   apiVersion?: string
+  modelCounts?: number
 }
 
-export const Header: React.FC<Props> = ({ apiVersion }) => {
+export const Header: React.FC<Props> = ({ apiVersion, modelCounts }) => {
   const [session] = useSession()
 
   let loginArea = !session ? (
@@ -65,6 +66,9 @@ export const Header: React.FC<Props> = ({ apiVersion }) => {
                 <Link color="textSecondary" href={'/api'}>
                   API Version: {apiVersion}
                 </Link>
+              </ListItemText>
+              <ListItemText>
+                <Typography variant="overline">Total models: {modelCounts}</Typography>
               </ListItemText>
             </List>
           </Typography>
