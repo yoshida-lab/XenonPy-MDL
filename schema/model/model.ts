@@ -303,10 +303,12 @@ export const MutationModel = mutationField(t => {
       const descriptorName = descriptor?.create?.name || descriptor?.where?.name || 'unknown.descriptor'
       const modelsetName = modelset?.create?.name || modelset?.where?.name || 'unknown.modelset'
       const magic_num = await magicNumGenerator()
-      const path = `${modelsetName.replace(/\s+/g, '_').toLowerCase()}/${propertyName
+      const path = `${modelsetName.replace(/\s+/g, '_').replace('-', '_').toLowerCase()}/${propertyName
         .replace(/\s+/g, '.')
-        .toLowerCase()}/${descriptorName.replace(/\s+/g, '.').toLowerCase()}/${methodName
+        .replace('-', '_')
+        .toLowerCase()}/${descriptorName.replace(/\s+/g, '.').replace('-', '_').toLowerCase()}/${methodName
         .replace(/\s+/g, '.')
+        .replace('-', '_')
         .toLowerCase()}/${stem}-$${magic_num}${suffix}`
 
       // upload
