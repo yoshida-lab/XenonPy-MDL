@@ -14,8 +14,10 @@
 
 import { ApolloError } from 'apollo-server-micro'
 import { queryField, objectType, unionType, mutationField, arg, booleanArg, stringArg, list, nonNull } from 'nexus'
+import { map } from 'bluebird'
 import { anyNormalUser, magicNumGenerator, removeNulls } from '../../lib/utils'
 import { ClassificationMetricCreateWithModel, RegressionMetricCreateWithModel } from '.'
+import { isValidated, splitFilename, reformatName } from './helper'
 
 /**
  * metrics such as mae, r2, recall
@@ -183,6 +185,7 @@ export const QueryModel = queryField(t => {
     args: {
       ids: arg({ type: nonNull(list(nonNull('Int'))), description: 'id of Models' })
     },
+
     async resolve(_parent, { ids }, { prisma, minio }) {
       await prisma.model.updateMany({
         where: { id: { in: ids } },
@@ -190,6 +193,9 @@ export const QueryModel = queryField(t => {
           downloads: { increment: 1 }
         }
       })
+
+      // findMany returns in a semi random order
+      // user has to resort the result by himself
       const models = await prisma.model.findMany({
         where: { id: { in: ids } },
         select: {
@@ -223,29 +229,6 @@ export const QueryModel = queryField(t => {
   })
 })
 
-/**
- * Filename with suffix
- * @param filename filename
- */
-const splitFilename = (filename: string) => {
-  const extensionList = ['.tar.gz', '.tar.bz2', '.zip', '.7z', '.gzip', '.bz2']
-
-  for (let ext of extensionList) {
-    if (filename.endsWith(ext)) {
-      return [filename.slice(0, -ext.length), ext]
-    }
-  }
-  throw new Error(`uploaded file must be compressed in ${extensionList}`)
-}
-
-/**
- * Check uploadModel input
- * @param obj any input object
- */
-const isValidated = (obj?: any) => {
-  return obj && Object.keys(obj).length !== 0
-}
-
 export const MutationModel = mutationField(t => {
   t.field('uploadModel', {
     type: 'Model',
@@ -275,13 +258,9 @@ export const MutationModel = mutationField(t => {
       training_info: arg({ type: 'Json' })
     },
     authorize: anyNormalUser, // any normal user can upload models
-    async resolve(
-      _parent,
-      { artifact, keywords, property, regMetric, clsMetric, ...remained },
-      { minio, uid, prisma }
-    ) {
+    async resolve(_parent, { artifact, keywords, regMetric, clsMetric, ...remained }, { minio, uid, prisma }) {
       // check keywords and property
-      if (!keywords && !property) {
+      if (!keywords && !remained.property) {
         throw new ApolloError('upload failed. user have to provide at least one of keywords or property')
       }
 
@@ -290,35 +269,19 @@ export const MutationModel = mutationField(t => {
         throw new ApolloError('upload failed. regMetric and clsMetric are mutually exclusive')
       }
 
-      /* upload artifact to MinIO */
-      const { filename, createReadStream } = await artifact
+      // validation procedure
+      // check where to try to match a existing record, if Yes, goto upload
+      // if No, check create to confirm a new record can be create, if Yes, goto upl
+      // if No, raise Error
+      const property = reformatName(remained.property)
+      const descriptor = reformatName(remained.descriptor)
+      const modelset = reformatName(remained.modelset)
+      const method = reformatName(remained.method)
 
-      // test and split suffix from filename
-      const [stem, suffix] = splitFilename(filename)
-
-      // calculate path
-      const { method, modelset, descriptor } = remained
-      const propertyName = property?.create?.name || property?.where?.name || 'unknown.property'
-      const methodName = method?.create?.name || method?.where?.name || 'unknown.method'
-      const descriptorName = descriptor?.create?.name || descriptor?.where?.name || 'unknown.descriptor'
-      const modelsetName = modelset?.create?.name || modelset?.where?.name || 'unknown.modelset'
-      const magic_num = await magicNumGenerator()
-      const path = `${modelsetName.replace(/\s+/g, '_').replace('-', '_').toLowerCase()}/${propertyName
-        .replace(/\s+/g, '.')
-        .replace('-', '_')
-        .toLowerCase()}/${descriptorName.replace(/\s+/g, '.').replace('-', '_').toLowerCase()}/${methodName
-        .replace(/\s+/g, '.')
-        .replace('-', '_')
-        .toLowerCase()}/${stem}-$${magic_num}${suffix}`
-
-      // upload
-      const stream = createReadStream()
-      try {
-        const etag = await minio.putObject(process.env.MINIO_MDL_BUCKET || 'mdl', path, stream)
-
-        // if success
-        const { deprecated, succeed, training_env, training_info } = remained
-        const model = await prisma.model.create({
+      // if success
+      const { deprecated, succeed, training_env, training_info } = remained
+      const id = (
+        await prisma.model.create({
           data: {
             // scale
             owner: {
@@ -334,14 +297,9 @@ export const MutationModel = mutationField(t => {
             // be care that we should not assign metrics when they are null
             regMetric: isValidated(regMetric) ? { create: { ...regMetric } } : undefined,
             clsMetric: isValidated(clsMetric) ? { create: { ...clsMetric } } : undefined,
-            artifact: {
-              create: {
-                etag,
-                path,
-                filename,
-                ownerId: uid!
-              }
-            },
+
+            // create an empty artifact
+            artifact: { create: { etag: '', path: '', filename: '', ownerId: uid! } },
 
             /**
              * TODO: if where matched nothing and creating throw errors, the uploading failed
@@ -361,9 +319,34 @@ export const MutationModel = mutationField(t => {
             }
           }
         })
-        return model
+      ).id
+
+      /* upload artifact to MinIO */
+      const { filename, createReadStream } = await artifact
+
+      // test and split suffix from filename
+      const [stem, suffix] = splitFilename(filename)
+
+      // make path
+      // match existing have high priority
+      const propertyName = property?.where?.name || property?.create?.name || 'unknown.property'
+      const methodName = method?.where?.name || method?.create?.name || 'unknown.method'
+      const descriptorName = descriptor?.where?.name || descriptor?.create?.name || 'unknown.descriptor'
+      const modelsetName = modelset?.where?.name || modelset?.create?.name || 'unknown.modelset'
+      const magic_num = await magicNumGenerator()
+      const path = `${modelsetName}/${propertyName}/${descriptorName}/${methodName}/${stem}-$${magic_num}${suffix}`
+
+      // upload
+      const stream = createReadStream()
+      try {
+        const etag = await minio.putObject(process.env.MINIO_MDL_BUCKET || 'mdl', path, stream)
+        return await prisma.model.update({
+          where: { id },
+          data: { artifact: { update: { etag, path, filename } } }
+        })
       } catch (err) {
         console.error(err.message)
+        await prisma.model.delete({ where: { id } })
         await minio.removeObject(process.env.MINIO_MDL_BUCKET || 'mdl', path)
         throw new ApolloError(`Error occurred in artifact uploading: ${err.message}`)
       }

@@ -151,7 +151,7 @@ if __name__ == "__main__":
 
         response = uploadModel(z,
                                keywords='aaa, bbbbb',
-                               property_="test.pppp",
+                               property_="test- with hyphen and - - -- space",
                                modelset={'where': {"name": 'some other'}, "create": {"name": "some other", "description": "other with space description"}},
                                method="test.fsege",
                                regMetric={"meanAbsError": 0.2},
