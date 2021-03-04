@@ -17,9 +17,10 @@ import { Typography } from '@material-ui/core'
 
 import { Layout } from '../components/Layout'
 import { withUrqlClient } from 'next-urql'
-import { API_ENTRYPOINT, initSSUrql } from '../lib/urql-client'
+import { PUBLIC_ENTRYPOINT, initSSRUrql, SERVER_ENTRYPOINT } from '../lib/urql-client'
 
 import styled from 'styled-components'
+import { GetStaticProps } from 'next'
 
 const StyledTypography = styled(Typography)`
   background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
@@ -46,17 +47,25 @@ const DB_Statistic = gql`
   }
 `
 
-export async function getStaticProps() {
-  const { client, ssrCache } = initSSUrql()
+export const getStaticProps: GetStaticProps = async _context => {
+  const { client, ssrCache } = initSSRUrql()
 
   await client.query(API_VERSION).toPromise()
+  await client.query(DB_Statistic).toPromise()
 
   return {
     props: {
       // urqlState is a keyword here so withUrqlClient can pick it up.
       urqlState: ssrCache.extractData()
     },
-    revalidate: 600
+    revalidate: 30
+  }
+}
+
+type BDInfo = {
+  version: string
+  statistic: {
+    [key: string]: number
   }
 }
 
@@ -77,7 +86,7 @@ function Page() {
 
 export default withUrqlClient(
   _ssr => ({
-    url: API_ENTRYPOINT
+    url: typeof window === 'undefined' ? SERVER_ENTRYPOINT : PUBLIC_ENTRYPOINT
   }),
   { ssr: false }
 )(Page)

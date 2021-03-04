@@ -19,10 +19,10 @@ import { FieldAuthorizeResolver } from 'nexus/dist/plugins/fieldAuthorizePlugin'
 
 /**
  * ~1 year needed, in order to have a 1% probability of at least on collision
- * in speed of 100,000 IDs per second
+ * in speed of 10,000 IDs per second
  */
-const alphabet = '346789ABCDEFGHJKLMNPQRTUVWXYabcdefghijkmnpqrtwxyz'
-export const keyGenerator = customAlphabet(alphabet, 8)
+const alphabet = '346789abcdefghijkmnpqrtwxyz'
+export const keyGenerator = customAlphabet(alphabet, 10)
 
 /**
  * generate 5 characters

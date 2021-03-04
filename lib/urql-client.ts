@@ -16,16 +16,17 @@ import { initUrqlClient } from 'next-urql'
 
 import { ssrExchange, dedupExchange, cacheExchange, fetchExchange } from 'urql'
 
-export const API_ENTRYPOINT = process.env.NEXT_PUBLIC_API_ENTRYPOINT ?? 'http://localhost:3000/api'
+export const PUBLIC_ENTRYPOINT = process.env.PUBLIC_API_ENTRYPOINT ?? 'http://localhost:3000/api'
+export const SERVER_ENTRYPOINT = process.env.SERVER_API_ENTRYPOINT ?? 'http://localhost:3000/api'
 
-export function initSSUrql() {
+export function initSSRUrql() {
   const ssrCache = ssrExchange({ isClient: false })
   const client = initUrqlClient(
     {
-      url: API_ENTRYPOINT,
+      url: SERVER_ENTRYPOINT,
       exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange]
     },
-    true
+    false
   )!
 
   return { client, ssrCache }

@@ -2,6 +2,10 @@
 ### Do not make changes to this file directly
 
 
+type AffectedRowsOutput {
+  count: Int!
+}
+
 type Artifact {
   etag: String!
   filename: String!
@@ -1551,6 +1555,7 @@ type Mutation {
   createOneMethod(data: MethodCreateInput!): Method!
   createOneModelset(data: ModelsetCreateInput!): Modelset!
   createOneProperty(data: PropertyCreateInput!): Property!
+  deleteManyModel(where: ModelWhereInput): AffectedRowsOutput!
   deleteOneDescriptor(where: DescriptorWhereUniqueInput!): Descriptor
   deleteOneMethod(where: MethodWhereUniqueInput!): Method
   deleteOneModelset(where: ModelsetWhereUniqueInput!): Modelset
@@ -2253,6 +2258,7 @@ input QueryModelsWhereInput {
   deprecated: BoolFilter
   descriptor: DescriptorWhereInput
   descriptorId: IntNullableFilter
+  id: IntFilter
   keywords: StringNullableFilter
   method: MethodWhereInput
   methodId: IntNullableFilter

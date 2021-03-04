@@ -14,7 +14,6 @@
 
 import { ApolloError } from 'apollo-server-micro'
 import { queryField, objectType, unionType, mutationField, arg, booleanArg, stringArg, list, nonNull } from 'nexus'
-import { map } from 'bluebird'
 import { anyNormalUser, magicNumGenerator, removeNulls } from '../../lib/utils'
 import { ClassificationMetricCreateWithModel, RegressionMetricCreateWithModel } from '.'
 import { isValidated, splitFilename, reformatName } from './helper'
@@ -147,6 +146,7 @@ export const QueryModel = queryField(t => {
   t.crud.model()
   t.crud.models({
     filtering: {
+      id: true,
       keywords: true,
       deprecated: true,
       succeed: true,
@@ -221,7 +221,6 @@ export const QueryModel = queryField(t => {
 
             return { id, url: base_url.href }
           }
-
           return { id, url: signedUrl }
         })
       )
@@ -230,6 +229,27 @@ export const QueryModel = queryField(t => {
 })
 
 export const MutationModel = mutationField(t => {
+  t.crud.deleteManyModel({
+    resolve: async (_root, args, { prisma, minio }) => {
+      const artifacts = await prisma.model.findMany({
+        where: { ...removeNulls(args.where) },
+        select: { id: true, artifact: { select: { path: true } } }
+      })
+      const paths: string[] = []
+      const ids: number[] = []
+      artifacts.forEach(s => {
+        ids.push(s.id)
+        paths.push(s.artifact.path)
+      })
+
+      try {
+        await minio.removeObjects(process.env.MINIO_MDL_BUCKET || 'mdl', paths)
+      } finally {
+        const res = await prisma.model.deleteMany({ where: { id: { in: ids } } })
+        return res
+      }
+    }
+  })
   t.field('uploadModel', {
     type: 'Model',
     nullable: false,
