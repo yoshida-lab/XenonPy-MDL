@@ -75,8 +75,11 @@ const handler = new ApolloServer({
     return { prisma, minio, req }
   },
 
+  // introspection
+  introspection: Boolean(process.env.INTROSPECTION) || process.env.NODE_ENV === 'development',
+
   // graphql playground
-  playground: Boolean(process.env.GRAPHQL_PLAYGROUND) || process.env.NODE_ENV === 'development',
+  playground: process.env.NODE_ENV === 'development',
 
   // graphql upload
   uploads: {

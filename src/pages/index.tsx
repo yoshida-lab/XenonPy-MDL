@@ -43,7 +43,7 @@ export const getStaticProps: GetStaticProps = async _context => {
       // urqlState is a keyword here so withUrqlClient can pick it up.
       urqlState: ssrCache.extractData()
     },
-    revalidate: 30
+    revalidate: 60
   }
 }
 
