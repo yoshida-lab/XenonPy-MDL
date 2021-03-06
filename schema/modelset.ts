@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { objectType, mutationField, queryField, stringArg, nonNull, list, scalarType } from 'nexus'
-import { anyNormalUser, signSelf } from '../lib/utils'
+import { anyNormalUser, signedSelf } from '../lib/utils'
 import prisma from '../lib/prisma'
 
 export const Modelset = objectType({
@@ -31,24 +31,21 @@ export const Modelset = objectType({
     t.model.artifacts()
     t.model.contributors()
     t.model.models({
+      complexity: 2,
       pagination: true,
       ordering: {
         id: true,
-        ownerId: true,
         createdAt: true,
         updatedAt: true,
         keywords: true,
+        modelset: true,
         property: true,
         method: true,
-        descriptor: true
+        descriptor: true,
+        clsMetric: true,
+        regMetric: true
       },
-      filtering: {
-        ownerId: true,
-        keywords: true,
-        property: true,
-        method: true,
-        descriptor: true
-      }
+      filtering: true
     })
     t.int('modelCounts', {
       description: 'number of models',
@@ -61,14 +58,27 @@ export const Modelset = objectType({
   }
 })
 
+export const Query = queryField(t => {
+  t.crud.modelset()
+  t.crud.modelsets({
+    pagination: true,
+    ordering: {
+      id: true,
+      name: true
+    },
+    // TODO: using filtering still have some bugs, active all until new plug-in's release
+    filtering: true
+  })
+})
+
 export const Mutation = mutationField(t => {
   t.crud.createOneModelset({
     authorize: anyNormalUser
   })
   t.crud.updateOneModelset({
-    authorize: signSelf(prisma.modelset.findUnique)
+    authorize: signedSelf(prisma.modelset.findUnique)
   })
   t.crud.deleteOneModelset({
-    authorize: signSelf(prisma.modelset.findUnique, true)
+    authorize: signedSelf(prisma.modelset.findUnique, true)
   })
 })

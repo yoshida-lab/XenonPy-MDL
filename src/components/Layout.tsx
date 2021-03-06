@@ -12,30 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { objectType, queryField } from 'nexus'
+import React, { ReactNode } from 'react'
+import { Header } from './Header'
+import Copyright from './Copyright'
 
-export const Organization = objectType({
-  name: 'Organization',
-  definition(t) {
-    t.model.id()
-    t.model.name()
-    t.model.description()
-    t.model.owner()
-    t.model.modelsets()
-    t.model.members()
-    t.model.artifacts()
-  }
-})
+type Props = {
+  children: ReactNode
+}
 
-export const Query = queryField(t => {
-  t.crud.organization()
-  t.crud.organizations({
-    pagination: true,
-    ordering: {
-      id: true,
-      name: true
-    },
-    // TODO: using filtering still have some bugs, active all until new plug-in's release
-    filtering: true
-  })
-})
+export const Layout: React.FC<Props> = ({ children }) => (
+  <div>
+    <Header />
+    <div className="layout">{children}</div>
+    <Copyright />
+  </div>
+)
+
+// export default Layout

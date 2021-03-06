@@ -21,14 +21,17 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { Box, ListItemText, List } from '@material-ui/core'
+import { useApiVersionQuery, useDbStatisticQuery } from '../graphql/generated'
 
-type Props = {
-  apiVersion?: string
-  modelCounts?: number
-}
-
-export const Header: React.FC<Props> = ({ apiVersion, modelCounts }) => {
+export const Header: React.FC = () => {
   const [session] = useSession()
+  const [version] = useApiVersionQuery()
+  const [statistic] = useDbStatisticQuery()
+
+  // SSR or SSG need fetch data on the fly
+  // give a default value to escape the error
+  const apiVersion = version.data?.apiVersion ?? 'unknown'
+  const modelCounts = statistic.data?.statistic.all ?? 0
 
   let loginArea = !session ? (
     <Button color="inherit">

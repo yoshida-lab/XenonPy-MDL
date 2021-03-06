@@ -2,6 +2,10 @@
 ### Do not make changes to this file directly
 
 
+type AffectedRowsOutput {
+  count: Int!
+}
+
 type Artifact {
   etag: String!
   filename: String!
@@ -456,7 +460,7 @@ type Descriptor {
 
   """number of models"""
   modelCounts: Int
-  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [DescriptorModelsOrderByInput!], where: DescriptorModelsWhereInput): [Model!]!
+  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [DescriptorModelsOrderByInput!], where: ModelWhereInput): [Model!]!
   name: String!
   owner: User
 }
@@ -517,16 +521,16 @@ input DescriptorListRelationFilter {
 }
 
 input DescriptorModelsOrderByInput {
+  clsMetric: ClassificationMetricOrderByInput
   createdAt: SortOrder
+  descriptor: DescriptorOrderByInput
   id: SortOrder
   keywords: SortOrder
-  ownerId: SortOrder
+  method: MethodOrderByInput
+  modelset: ModelsetOrderByInput
+  property: PropertyOrderByInput
+  regMetric: RegressionMetricOrderByInput
   updatedAt: SortOrder
-}
-
-input DescriptorModelsWhereInput {
-  keywords: StringNullableFilter
-  ownerId: IntNullableFilter
 }
 
 input DescriptorOrderByInput {
@@ -688,7 +692,7 @@ type Method {
 
   """number of models"""
   modelCounts: Int
-  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [MethodModelsOrderByInput!], where: MethodModelsWhereInput): [Model!]!
+  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [MethodModelsOrderByInput!], where: ModelWhereInput): [Model!]!
   name: String!
   owner: User
 }
@@ -749,16 +753,16 @@ input MethodListRelationFilter {
 }
 
 input MethodModelsOrderByInput {
+  clsMetric: ClassificationMetricOrderByInput
   createdAt: SortOrder
+  descriptor: DescriptorOrderByInput
   id: SortOrder
   keywords: SortOrder
-  ownerId: SortOrder
+  method: MethodOrderByInput
+  modelset: ModelsetOrderByInput
+  property: PropertyOrderByInput
+  regMetric: RegressionMetricOrderByInput
   updatedAt: SortOrder
-}
-
-input MethodModelsWhereInput {
-  keywords: StringNullableFilter
-  ownerId: IntNullableFilter
 }
 
 input MethodOrderByInput {
@@ -1029,7 +1033,7 @@ type Modelset {
 
   """number of models"""
   modelCounts: Int
-  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [ModelsetModelsOrderByInput!], where: ModelsetModelsWhereInput): [Model!]!
+  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [ModelsetModelsOrderByInput!], where: ModelWhereInput): [Model!]!
   name: String!
   organization: Organization
   owner: User
@@ -1231,22 +1235,16 @@ input ModelsetListRelationFilter {
 }
 
 input ModelsetModelsOrderByInput {
+  clsMetric: ClassificationMetricOrderByInput
   createdAt: SortOrder
   descriptor: DescriptorOrderByInput
   id: SortOrder
   keywords: SortOrder
   method: MethodOrderByInput
-  ownerId: SortOrder
+  modelset: ModelsetOrderByInput
   property: PropertyOrderByInput
+  regMetric: RegressionMetricOrderByInput
   updatedAt: SortOrder
-}
-
-input ModelsetModelsWhereInput {
-  descriptor: DescriptorWhereInput
-  keywords: StringNullableFilter
-  method: MethodWhereInput
-  ownerId: IntNullableFilter
-  property: PropertyWhereInput
 }
 
 input ModelsetOrderByInput {
@@ -1557,6 +1555,7 @@ type Mutation {
   createOneMethod(data: MethodCreateInput!): Method!
   createOneModelset(data: ModelsetCreateInput!): Modelset!
   createOneProperty(data: PropertyCreateInput!): Property!
+  deleteManyModel(where: ModelWhereInput): AffectedRowsOutput!
   deleteOneDescriptor(where: DescriptorWhereUniqueInput!): Descriptor
   deleteOneMethod(where: MethodWhereUniqueInput!): Method
   deleteOneModelset(where: ModelsetWhereUniqueInput!): Modelset
@@ -1956,7 +1955,7 @@ type Property {
 
   """number of models"""
   modelCounts: Int
-  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [PropertyModelsOrderByInput!], where: PropertyModelsWhereInput): [Model!]!
+  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [PropertyModelsOrderByInput!], where: ModelWhereInput): [Model!]!
   name: String!
   owner: User
   symbol: String
@@ -2048,16 +2047,16 @@ input PropertyListRelationFilter {
 }
 
 input PropertyModelsOrderByInput {
+  clsMetric: ClassificationMetricOrderByInput
   createdAt: SortOrder
+  descriptor: DescriptorOrderByInput
   id: SortOrder
   keywords: SortOrder
-  ownerId: SortOrder
+  method: MethodOrderByInput
+  modelset: ModelsetOrderByInput
+  property: PropertyOrderByInput
+  regMetric: RegressionMetricOrderByInput
   updatedAt: SortOrder
-}
-
-input PropertyModelsWhereInput {
-  keywords: StringNullableFilter
-  ownerId: IntNullableFilter
 }
 
 input PropertyOrderByInput {
@@ -2217,18 +2216,21 @@ type Query {
   artifact(where: ArtifactWhereUniqueInput!): Artifact
   artifacts(after: ArtifactWhereUniqueInput, before: ArtifactWhereUniqueInput, first: Int, last: Int, where: ArtifactWhereInput): [Artifact!]!
   descriptor(where: DescriptorWhereUniqueInput!): Descriptor
-  descriptors(after: DescriptorWhereUniqueInput, before: DescriptorWhereUniqueInput, first: Int, last: Int, orderBy: [QueryDescriptorsOrderByInput!], where: QueryDescriptorsWhereInput): [Descriptor!]!
+  descriptors(after: DescriptorWhereUniqueInput, before: DescriptorWhereUniqueInput, first: Int, last: Int, orderBy: [QueryDescriptorsOrderByInput!], where: DescriptorWhereInput): [Descriptor!]!
   getModelUrls(
     """id of Models"""
     ids: [Int!]!
-  ): [ModelUrl]
+    orderBy: [ModelOrderByInput!]
+  ): [ModelUrl!]!
   method(where: MethodWhereUniqueInput!): Method
-  methods(after: MethodWhereUniqueInput, before: MethodWhereUniqueInput, first: Int, last: Int, orderBy: [QueryMethodsOrderByInput!], where: QueryMethodsWhereInput): [Method!]!
+  methods(after: MethodWhereUniqueInput, before: MethodWhereUniqueInput, first: Int, last: Int, orderBy: [QueryMethodsOrderByInput!], where: MethodWhereInput): [Method!]!
   model(where: ModelWhereUniqueInput!): Model
-  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [ModelOrderByInput!], where: ModelWhereInput): [Model!]!
+  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [ModelOrderByInput!], where: QueryModelsWhereInput): [Model!]!
+  modelset(where: ModelsetWhereUniqueInput!): Modelset
+  modelsets(after: ModelsetWhereUniqueInput, before: ModelsetWhereUniqueInput, first: Int, last: Int, orderBy: [QueryModelsetsOrderByInput!], where: ModelsetWhereInput): [Modelset!]!
   organization(where: OrganizationWhereUniqueInput!): Organization
-  organizations(after: OrganizationWhereUniqueInput, before: OrganizationWhereUniqueInput, first: Int, last: Int, orderBy: [QueryOrganizationsOrderByInput!], where: QueryOrganizationsWhereInput): [Organization!]!
-  properties(after: PropertyWhereUniqueInput, before: PropertyWhereUniqueInput, first: Int, last: Int, orderBy: [QueryPropertiesOrderByInput!], where: QueryPropertiesWhereInput): [Property!]!
+  organizations(after: OrganizationWhereUniqueInput, before: OrganizationWhereUniqueInput, first: Int, last: Int, orderBy: [QueryOrganizationsOrderByInput!], where: OrganizationWhereInput): [Organization!]!
+  properties(after: PropertyWhereUniqueInput, before: PropertyWhereUniqueInput, first: Int, last: Int, orderBy: [QueryPropertiesOrderByInput!], where: PropertyWhereInput): [Property!]!
   property(where: PropertyWhereUniqueInput!): Property
 
   """Number of all models"""
@@ -2242,19 +2244,9 @@ input QueryDescriptorsOrderByInput {
   name: SortOrder
 }
 
-input QueryDescriptorsWhereInput {
-  description: StringNullableFilter
-  name: StringFilter
-}
-
 input QueryMethodsOrderByInput {
   id: SortOrder
   name: SortOrder
-}
-
-input QueryMethodsWhereInput {
-  description: StringNullableFilter
-  name: StringFilter
 }
 
 enum QueryMode {
@@ -2262,25 +2254,36 @@ enum QueryMode {
   insensitive
 }
 
+input QueryModelsWhereInput {
+  clsMetric: ClassificationMetricWhereInput
+  deprecated: BoolFilter
+  descriptor: DescriptorWhereInput
+  descriptorId: IntNullableFilter
+  id: IntFilter
+  keywords: StringNullableFilter
+  method: MethodWhereInput
+  methodId: IntNullableFilter
+  modelset: ModelsetWhereInput
+  property: PropertyWhereInput
+  propertyId: IntNullableFilter
+  regMetric: RegressionMetricWhereInput
+  setId: IntNullableFilter
+  succeed: BoolFilter
+}
+
+input QueryModelsetsOrderByInput {
+  id: SortOrder
+  name: SortOrder
+}
+
 input QueryOrganizationsOrderByInput {
   id: SortOrder
   name: SortOrder
 }
 
-input QueryOrganizationsWhereInput {
-  description: StringNullableFilter
-  name: StringFilter
-}
-
 input QueryPropertiesOrderByInput {
   id: SortOrder
   name: SortOrder
-}
-
-input QueryPropertiesWhereInput {
-  description: StringNullableFilter
-  name: StringFilter
-  unit: StringNullableFilter
 }
 
 input QueryUsersWhereInput {
@@ -2456,7 +2459,7 @@ type User {
 
   """number of models"""
   modelCounts: Int
-  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int): [Model!]!
+  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [UserModelsOrderByInput!], where: ModelWhereInput): [Model!]!
   name: String
   role: Role!
   updatedAt: DateTime!
@@ -2526,6 +2529,19 @@ input UserListRelationFilter {
   every: UserWhereInput
   none: UserWhereInput
   some: UserWhereInput
+}
+
+input UserModelsOrderByInput {
+  clsMetric: ClassificationMetricOrderByInput
+  createdAt: SortOrder
+  descriptor: DescriptorOrderByInput
+  id: SortOrder
+  keywords: SortOrder
+  method: MethodOrderByInput
+  modelset: ModelsetOrderByInput
+  property: PropertyOrderByInput
+  regMetric: RegressionMetricOrderByInput
+  updatedAt: SortOrder
 }
 
 input UserScalarWhereInput {

@@ -151,11 +151,11 @@ if __name__ == "__main__":
 
         response = uploadModel(z,
                                keywords='aaa, bbbbb',
-                               property_="test.pppp",
-                               modelset={'where': {"name": 'some other'}, "create": {"name": "some other", "description": "other with space description"}},
-                               method="test.sdie",
+                               property_="test- with hyphen and - - -- space",
+                               modelset={'where': {"name": 'test delete model'}, "create": {"name": "test delete model"}},
+                               method="test.fsege",
                                regMetric={"meanAbsError": 0.2},
-                               clsMetric={'f1': 0.8},
+                            #    clsMetric={'f1': 0.8},
                                url=url,
                                api_key=sys.argv[1])
         # response = uploadArtifact(z, url=url, api_key=sys.argv[1])

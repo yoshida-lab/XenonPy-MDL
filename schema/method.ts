@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { objectType, mutationField, queryField } from 'nexus'
-import { anyNormalUser, signSelf } from '../lib/utils'
+import { anyNormalUser, signedSelf } from '../lib/utils'
 import prisma from '../lib/prisma'
 
 export const Method = objectType({
@@ -25,18 +25,21 @@ export const Method = objectType({
     t.model.name()
     t.model.description()
     t.model.models({
+      complexity: 2,
       pagination: true,
       ordering: {
         id: true,
-        ownerId: true,
         createdAt: true,
         updatedAt: true,
-        keywords: true
+        keywords: true,
+        modelset: true,
+        property: true,
+        method: true,
+        descriptor: true,
+        clsMetric: true,
+        regMetric: true
       },
-      filtering: {
-        ownerId: true,
-        keywords: true
-      }
+      filtering: true
     })
     t.int('modelCounts', {
       description: 'number of models',
@@ -57,10 +60,8 @@ export const Query = queryField(t => {
       id: true,
       name: true
     },
-    filtering: {
-      name: true,
-      description: true
-    }
+    // TODO: using filtering still have some bugs, active all until new plug-in's release
+    filtering: true
   })
 })
 
@@ -69,9 +70,9 @@ export const Mutation = mutationField(t => {
     authorize: anyNormalUser
   })
   t.crud.updateOneMethod({
-    authorize: signSelf(prisma.method.findUnique)
+    authorize: signedSelf(prisma.method.findUnique)
   })
   t.crud.deleteOneMethod({
-    authorize: signSelf(prisma.method.findUnique, true)
+    authorize: signedSelf(prisma.method.findUnique, true)
   })
 })

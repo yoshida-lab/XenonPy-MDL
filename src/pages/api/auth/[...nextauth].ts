@@ -19,8 +19,8 @@ import bcrypt from 'bcrypt'
 
 import { NextApiRequest, NextApiResponse, SessionBase } from 'next-auth/_utils'
 
-import { keyGenerator } from '../../../lib/utils'
-import prisma from '../../../lib/prisma'
+import { keyGenerator } from '../../../../lib/utils'
+import prisma from '../../../../lib/prisma'
 
 export default (req: NextApiRequest, res: NextApiResponse<any>) =>
   NextAuth(req, res, {
