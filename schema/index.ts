@@ -99,13 +99,13 @@ export const schema = makeSchema({
   outputs: {
     // Type definition under 'node_modules/@types/typegen-nexus/index.d.ts' will be loaded automatically
     typegen: path.join(process.cwd(), 'node_modules/@types/typegen-nexus/index.d.ts'),
-    schema: path.join(process.cwd(), 'schema/nexus-generated-schema.graphql')
+    schema: path.join(process.cwd(), 'src/graphql/generated/nexus-schema.graphql')
   },
 
   // Context typing of resolve(_, _, ctx: Context)
   contextType: {
     // IMPORT: in docker, require.resolve not works
-    module: path.join(process.cwd(), 'pages/api/context.ts'),
+    module: path.join(process.cwd(), 'src/pages/api/context.ts'),
     // alias: 'ContextModule',
     export: 'Context'
   },

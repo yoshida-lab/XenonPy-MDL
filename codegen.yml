@@ -1,8 +1,8 @@
 overwrite: true
-schema: 'schema/*.graphql' # GraphQL endpoint via the nexus dev server
-# documents: 'schema/*.graphql' # parse graphql operations in matching files
+schema: 'http://localhost:3000/api' # GraphQL endpoint via the nexus dev server
+documents: 'src/graphql/*.ts' # parse graphql operations in matching files
 generates:
-  lib/graphql.ts: # location for generated types, hooks and components
+  src/graphql/generated/index.ts: # location for generated types, hooks and components
     plugins:
       - 'typescript'
       - 'typescript-operations'
