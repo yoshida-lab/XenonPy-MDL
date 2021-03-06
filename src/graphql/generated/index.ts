@@ -311,7 +311,7 @@ export type Query = {
   methods: Array<Method>;
   model?: Maybe<Model>;
   models: Array<Model>;
-  getModelUrls?: Maybe<Array<Maybe<ModelUrl>>>;
+  getModelUrls: Array<ModelUrl>;
   modelset?: Maybe<Modelset>;
   modelsets: Array<Modelset>;
   organization?: Maybe<Organization>;
@@ -386,6 +386,7 @@ export type QueryModelsArgs = {
 
 export type QueryGetModelUrlsArgs = {
   ids: Array<Scalars['Int']>;
+  orderBy?: Maybe<Array<ModelOrderByInput>>;
 };
 
 

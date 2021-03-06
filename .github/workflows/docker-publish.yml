@@ -26,7 +26,7 @@ jobs:
           # list of Docker images to use as base name for tags
           images: ghcr.io/yoshida-lab/XenonPy-service
           # add git short SHA as Docker tag
-          tag-sha: false
+          tag-sha: true
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
