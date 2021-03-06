@@ -14,9 +14,10 @@
 
 import { ApolloError } from 'apollo-server-micro'
 import { queryField, objectType, unionType, mutationField, arg, booleanArg, stringArg, list, nonNull } from 'nexus'
-import { anyNormalUser, magicNumGenerator, removeNulls } from '../../lib/utils'
+import { anyNormalUser, magicNumGenerator, removeNulls, signedSelf } from '../../lib/utils'
 import { ClassificationMetricCreateWithModel, RegressionMetricCreateWithModel } from '.'
 import { isValidated, splitFilename, reformatName } from './helper'
+import prisma from '../../lib/prisma'
 
 /**
  * metrics such as mae, r2, recall
@@ -230,6 +231,10 @@ export const QueryModel = queryField(t => {
 
 export const MutationModel = mutationField(t => {
   t.crud.deleteManyModel({
+    // any normal/super user can delete models
+    authorize: signedSelf(prisma.model.findMany, true),
+
+    // use custom resolver
     resolve: async (_root, args, { prisma, minio }) => {
       const artifacts = await prisma.model.findMany({
         where: { ...removeNulls(args.where) },

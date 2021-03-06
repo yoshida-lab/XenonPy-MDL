@@ -23,12 +23,11 @@ import { GetStaticProps } from 'next'
 import { ApiVersionDocument, DbStatisticDocument } from '../graphql/generated'
 
 const StyledTypography = styled(Typography)`
-  background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
-  background: radial-gradient(45deg);
+  background: linear-gradient(45deg, #8addf7 80%, #ff8e53 90%);
   border: 0;
   borderradius: 3;
   boxshadow: 0 3px 5px 2px rgba(255, 105, 135, 0.3);
-  color: white;
+  /* color: white; */
   height: 48;
   padding: 0 30px;
 `
@@ -51,7 +50,11 @@ export const getStaticProps: GetStaticProps = async _context => {
 function Page() {
   return (
     <Layout>
-      <StyledTypography variant="body1">Place holder</StyledTypography>
+      <StyledTypography variant="body2">
+        This site temporarily provides searching and downloading services. You have no need to signup or login for
+        searching. <br /> Please keep in mind that the server is still under development, all user generated API key and
+        their information will be deleted before the final release.
+      </StyledTypography>
     </Layout>
   )
 }

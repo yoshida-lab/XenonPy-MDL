@@ -21,7 +21,6 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { Box, ListItemText, List } from '@material-ui/core'
-import { useQuery, gql } from 'urql'
 import { useApiVersionQuery, useDbStatisticQuery } from '../graphql/generated'
 
 export const Header: React.FC = () => {

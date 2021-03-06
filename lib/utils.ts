@@ -35,12 +35,12 @@ export const magicNumGenerator = async () => await nanoid(5)
  *
  * @param args Parameters passed from graphQL input
  * @param uid Computed user id in middleware, normal user has id > 0, super user id is -1
- * @param uniqueFinder Prisma findUnique function
+ * @param userMatcher Prisma findUnique function
  * @param allowSuperUser Set true to allow super user
  */
 
-export function signSelf<T extends string, F extends string>(
-  uniqueFinder: ({ where, select }: any) => Promise<{ ownerId: number | null } | null>,
+export function signedSelf<T extends string, F extends string>(
+  userMatcher: ({ where, select }: any) => Promise<{ ownerId: number | null } | { ownerId: number | null }[] | null>,
   allowSuperUser: boolean = false
 ) {
   const authorize: FieldAuthorizeResolver<T, F> = async (
@@ -54,13 +54,25 @@ export function signSelf<T extends string, F extends string>(
     }
 
     // pass owner
-    const checker = await uniqueFinder({
+    const checker = await userMatcher({
+      distinct: ['ownerId'],
       where: { ...removeNulls(args.where) },
       select: { ownerId: true }
     })
 
-    if (checker?.ownerId === uid) {
+    if (checker === null) {
+      // accept null operations
       return true
+    } else {
+      if (Array.isArray(checker)) {
+        if (checker.length === 0 || (checker.length === 1 && checker[0].ownerId === uid)) {
+          return true
+        }
+      } else {
+        if (checker.ownerId === uid) {
+          return true
+        }
+      }
     }
 
     // reject

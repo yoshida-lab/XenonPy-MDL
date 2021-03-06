@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { objectType, mutationField, queryField } from 'nexus'
-import { anyNormalUser, signSelf } from '../lib/utils'
+import { anyNormalUser, signedSelf } from '../lib/utils'
 import prisma from '../lib/prisma'
 
 export const Property = objectType({
@@ -71,9 +71,9 @@ export const Mutation = mutationField(t => {
     authorize: anyNormalUser
   })
   t.crud.updateOneProperty({
-    authorize: signSelf(prisma.property.findUnique)
+    authorize: signedSelf(prisma.property.findUnique)
   })
   t.crud.deleteOneProperty({
-    authorize: signSelf(prisma.property.findUnique, true)
+    authorize: signedSelf(prisma.property.findUnique, true)
   })
 })

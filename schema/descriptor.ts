@@ -14,7 +14,7 @@
 
 import { objectType, mutationField, queryField } from 'nexus'
 import prisma from '../lib/prisma'
-import { anyNormalUser, signSelf } from '../lib/utils'
+import { anyNormalUser, signedSelf } from '../lib/utils'
 
 export const Descriptor = objectType({
   name: 'Descriptor',
@@ -69,9 +69,9 @@ export const Mutation = mutationField(t => {
     authorize: anyNormalUser
   })
   t.crud.updateOneDescriptor({
-    authorize: signSelf(prisma.descriptor.findUnique)
+    authorize: signedSelf(prisma.descriptor.findUnique)
   })
   t.crud.deleteOneDescriptor({
-    authorize: signSelf(prisma.descriptor.findUnique, true)
+    authorize: signedSelf(prisma.descriptor.findUnique, true)
   })
 })
