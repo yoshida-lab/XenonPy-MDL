@@ -15,7 +15,6 @@
 import { objectType, mutationField, queryField } from 'nexus'
 import { anyNormalUser, signedSelf } from '../lib/utils'
 import prisma from '../lib/prisma'
-import { filter } from 'lodash'
 
 export const Method = objectType({
   name: 'Method',

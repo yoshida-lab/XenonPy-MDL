@@ -183,11 +183,13 @@ export const QueryModel = queryField(t => {
   t.field('getModelUrls', {
     type: ModelUrl,
     list: true,
+    nullable: false,
     args: {
-      ids: arg({ type: nonNull(list(nonNull('Int'))), description: 'id of Models' })
+      ids: arg({ type: nonNull(list(nonNull('Int'))), description: 'id of Models' }),
+      orderBy: arg({ type: list(nonNull('ModelOrderByInput')) })
     },
 
-    async resolve(_parent, { ids }, { prisma, minio }) {
+    async resolve(_parent, { ids, orderBy }, { prisma, minio }) {
       await prisma.model.updateMany({
         where: { id: { in: ids } },
         data: {
@@ -199,6 +201,7 @@ export const QueryModel = queryField(t => {
       // user has to resort the result by himself
       const models = await prisma.model.findMany({
         where: { id: { in: ids } },
+        orderBy: removeNulls(orderBy),
         select: {
           id: true,
           artifact: {
