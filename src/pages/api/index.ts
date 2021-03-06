@@ -78,9 +78,6 @@ const handler = new ApolloServer({
   // introspection
   introspection: Boolean(process.env.INTROSPECTION) || process.env.NODE_ENV === 'development',
 
-  // graphql playground
-  playground: process.env.NODE_ENV === 'development',
-
   // graphql upload
   uploads: {
     maxFileSize: 1024 * 1024 * 1024 * 128, // MB
