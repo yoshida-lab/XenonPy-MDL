@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ApolloError } from 'apollo-server-micro'
-import { MutationUploadModelArgs } from '../../lib/graphql'
+import { MutationUploadModelArgs } from '../../src/graphql/generated'
 
 /**
  * Filename with suffix

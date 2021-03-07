@@ -22,7 +22,7 @@ export const ApiVersion = queryType({
     t.string('apiVersion', {
       description: 'The version of currently API',
       nullable: false,
-      resolve: _ => '0.2.3'
+      resolve: _ => '0.2.4'
     })
   }
 })
