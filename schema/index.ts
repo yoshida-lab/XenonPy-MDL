@@ -53,7 +53,7 @@ const RoleType = enumType({
  * using Nexus.js and plugins
  * See also: https://nexusjs.org/docs/plugins/prisma
  */
-export const schema = makeSchema({
+const schema = makeSchema({
   types: [
     Artifact,
     Descriptor,
@@ -119,3 +119,5 @@ export const schema = makeSchema({
     ]
   }
 })
+
+export default schema

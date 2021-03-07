@@ -20,7 +20,7 @@ import Cors from 'micro-cors'
 import prisma from '../../../lib/prisma'
 import minio from '../../../lib/minio-client'
 import { Context } from './context'
-import { schema } from '../../../schema'
+import schema from '../../../schema'
 
 // expose the to config api behaviour in nextjs
 export const config = {
