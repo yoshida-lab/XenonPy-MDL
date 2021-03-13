@@ -52,8 +52,8 @@ function Page() {
     <Layout>
       <StyledTypography variant="body2">
         This site temporarily provides searching and downloading services. You have no need to signup or login for
-        searching. <br /> Please keep in mind that the server is still under development, all user generated API key and
-        their information will be deleted before the final release.
+        searching and downloading. <br /> Please keep in mind that the server is still under development, all user
+        generated API keys and users' information will be deleted before the final release.
       </StyledTypography>
     </Layout>
   )
