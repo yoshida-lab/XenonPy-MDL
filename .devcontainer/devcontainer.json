@@ -37,7 +37,8 @@
     "adpyke.vscode-sql-formatter",
     "ymotongpoo.licenser",
     "jpoissonnier.vscode-styled-components",
-    "ms-azuretools.vscode-docker"
+    "ms-azuretools.vscode-docker",
+    "gruntfuggly.todo-tree"
   ],
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [
