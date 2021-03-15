@@ -6,6 +6,10 @@ on:
   push:
     paths-ignore:
       - ".devcontainer/**"
+      - ".vscode"
+      - "**.md"
+      - ".eslint*"
+      - "**.yml"
     branches:
       - "master"
     tags:
