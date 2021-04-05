@@ -3,7 +3,7 @@ WORKDIR /base
 COPY package*.json ./
 RUN yarn install
 COPY . .
-RUN ls -l && yarn gen:prisma
+RUN yarn gen:prisma
 
 FROM base AS build
 ENV NODE_ENV=production

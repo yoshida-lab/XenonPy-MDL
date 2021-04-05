@@ -34,6 +34,11 @@ input ArtifactCreateNestedManyWithoutOwnerInput {
   create: [ArtifactCreateWithoutOwnerInput!]
 }
 
+input ArtifactCreateOrConnectWithoutModelInput {
+  create: ArtifactCreateWithoutModelInput!
+  where: ArtifactWhereUniqueInput!
+}
+
 input ArtifactCreateOrConnectWithoutModelsetInput {
   create: ArtifactCreateWithoutModelsetInput!
   where: ArtifactWhereUniqueInput!
@@ -47,6 +52,14 @@ input ArtifactCreateOrConnectWithoutOrganizationInput {
 input ArtifactCreateOrConnectWithoutOwnerInput {
   create: ArtifactCreateWithoutOwnerInput!
   where: ArtifactWhereUniqueInput!
+}
+
+input ArtifactCreateWithoutModelInput {
+  etag: String!
+  filename: String!
+  modelset: ModelsetCreateNestedOneWithoutArtifactsInput
+  organization: OrganizationCreateNestedOneWithoutArtifactsInput
+  path: String!
 }
 
 input ArtifactCreateWithoutModelsetInput {
@@ -165,6 +178,14 @@ input ArtifactUpdateManyWithoutOwnerInput {
   upsert: [ArtifactUpsertWithWhereUniqueWithoutOwnerInput!]
 }
 
+input ArtifactUpdateOneRequiredWithoutModelInput {
+  connect: ArtifactWhereUniqueInput
+  connectOrCreate: ArtifactCreateOrConnectWithoutModelInput
+  create: ArtifactCreateWithoutModelInput
+  update: ArtifactUpdateWithoutModelInput
+  upsert: ArtifactUpsertWithoutModelInput
+}
+
 input ArtifactUpdateWithWhereUniqueWithoutModelsetInput {
   data: ArtifactUpdateWithoutModelsetInput!
   where: ArtifactWhereUniqueInput!
@@ -178,6 +199,14 @@ input ArtifactUpdateWithWhereUniqueWithoutOrganizationInput {
 input ArtifactUpdateWithWhereUniqueWithoutOwnerInput {
   data: ArtifactUpdateWithoutOwnerInput!
   where: ArtifactWhereUniqueInput!
+}
+
+input ArtifactUpdateWithoutModelInput {
+  etag: StringFieldUpdateOperationsInput
+  filename: StringFieldUpdateOperationsInput
+  modelset: ModelsetUpdateOneWithoutArtifactsInput
+  organization: OrganizationUpdateOneWithoutArtifactsInput
+  path: StringFieldUpdateOperationsInput
 }
 
 input ArtifactUpdateWithoutModelsetInput {
@@ -221,6 +250,11 @@ input ArtifactUpsertWithWhereUniqueWithoutOwnerInput {
   create: ArtifactCreateWithoutOwnerInput!
   update: ArtifactUpdateWithoutOwnerInput!
   where: ArtifactWhereUniqueInput!
+}
+
+input ArtifactUpsertWithoutModelInput {
+  create: ArtifactCreateWithoutModelInput!
+  update: ArtifactUpdateWithoutModelInput!
 }
 
 input ArtifactWhereInput {
@@ -874,6 +908,35 @@ input ModelOrderByInput {
   updatedAt: SortOrder
 }
 
+input ModelUpdateInput {
+  artifact: ArtifactUpdateOneRequiredWithoutModelInput
+  clsMetric: ClassificationMetricUpdateOneWithoutModelInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deprecated: BoolFieldUpdateOperationsInput
+  descriptor: DescriptorUpdateOneWithoutModelsInput
+  downloads: NullableIntFieldUpdateOperationsInput
+  keywords: NullableStringFieldUpdateOperationsInput
+  method: MethodUpdateOneWithoutModelsInput
+  modelset: ModelsetUpdateOneWithoutModelsInput
+  property: PropertyUpdateOneWithoutModelsInput
+  regMetric: RegressionMetricUpdateOneWithoutModelInput
+  succeed: BoolFieldUpdateOperationsInput
+  trainingEnv: Json
+  trainingInfo: Json
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input ModelUpdateManyMutationInput {
+  createdAt: DateTimeFieldUpdateOperationsInput
+  deprecated: BoolFieldUpdateOperationsInput
+  downloads: NullableIntFieldUpdateOperationsInput
+  keywords: NullableStringFieldUpdateOperationsInput
+  succeed: BoolFieldUpdateOperationsInput
+  trainingEnv: Json
+  trainingInfo: Json
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
 input ModelUpdateOneWithoutArtifactInput {
   connect: ModelWhereUniqueInput
   connectOrCreate: ModelCreateOrConnectWithoutArtifactInput
@@ -1450,8 +1513,10 @@ type Mutation {
   deleteOneMethod(where: MethodWhereUniqueInput!): Method
   deleteOneModelset(where: ModelsetWhereUniqueInput!): Modelset
   deleteOneProperty(where: PropertyWhereUniqueInput!): Property
+  updateManyModel(data: ModelUpdateManyMutationInput!, where: ModelWhereInput): AffectedRowsOutput!
   updateOneDescriptor(data: DescriptorUpdateInput!, where: DescriptorWhereUniqueInput!): Descriptor
   updateOneMethod(data: MethodUpdateInput!, where: MethodWhereUniqueInput!): Method
+  updateOneModel(data: ModelUpdateInput!, where: ModelWhereUniqueInput!): Model
   updateOneModelset(data: ModelsetUpdateInput!, where: ModelsetWhereUniqueInput!): Modelset
   updateOneProperty(data: PropertyUpdateInput!, where: PropertyWhereUniqueInput!): Property
   updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User

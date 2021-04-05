@@ -258,6 +258,32 @@ export const MutationModel = mutationField(t => {
       }
     }
   })
+  t.crud.updateOneModel({
+    // any owner can update model infos
+    authorize: signedSelf(prisma.model.findUnique),
+
+    // use custom resolver
+    resolve: async (_root, args, { prisma }) => {
+      const model = await prisma.model.update({
+        where: { ...removeNulls(args.where) },
+        data: { ...removeNulls(args.data) }
+      })
+      return model
+    }
+  })
+  t.crud.updateManyModel({
+    // any owner can update model infos
+    authorize: signedSelf(prisma.model.findMany),
+
+    // use custom resolver
+    resolve: async (_root, args, { prisma }) => {
+      const models = await prisma.model.updateMany({
+        where: { ...removeNulls(args.where) },
+        data: { ...removeNulls(args.data) }
+      })
+      return models
+    }
+  })
   t.field('uploadModel', {
     type: 'Model',
     nullable: false,
