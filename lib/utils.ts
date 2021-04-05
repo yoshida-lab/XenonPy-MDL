@@ -58,7 +58,6 @@ export function signedSelf<T extends string, F extends string>(
       where: { ...removeNulls(args.where) },
       select: { ownerId: true }
     }
-    console.log(userMatcher)
 
     if (userMatcher.name !== 'findUnique') {
       Object.assign(query, { distinct: ['ownerId'] })
