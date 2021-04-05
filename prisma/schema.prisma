@@ -44,7 +44,9 @@ model ClassificationMetric {
 model Descriptor {
   id          Int     @id @default(autoincrement())
   name        String  @unique
+  version     String?
   description String?
+  sampleCode  String?
   ownerId     Int?
   owner       User?   @relation(fields: [ownerId], references: [id])
   models      Model[]
@@ -56,6 +58,7 @@ model Method {
   id          Int     @id @default(autoincrement())
   name        String  @unique
   description String?
+  version     String?
   owner       User?   @relation(fields: [ownerId], references: [id])
   ownerId     Int?
   models      Model[]
@@ -97,9 +100,9 @@ model Modelset {
   id             Int           @id @default(autoincrement())
   name           String        @unique
   description    String?
+  version        String?
   keywords       String?
   private        Boolean       @default(false)
-  sampleCode     String?
   deprecated     Boolean       @default(false)
   organizationId Int?
   organization   Organization? @relation(fields: [organizationId], references: [id])
