@@ -23,7 +23,7 @@ export const Modelset = objectType({
     t.model.name()
     t.model.description()
     t.model.keywords({ description: 'keywords split by comma or white space' })
-    t.model.sampleCode()
+    t.model.version()
     t.model.deprecated()
     t.model.private()
     t.model.organization()

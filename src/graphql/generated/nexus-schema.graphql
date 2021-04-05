@@ -454,6 +454,8 @@ type Descriptor {
 input DescriptorCreateInput {
   description: String
   name: String!
+  sampleCode: String
+  version: String
 }
 
 input DescriptorCreateNestedManyWithoutOwnerInput {
@@ -481,11 +483,15 @@ input DescriptorCreateOrConnectWithoutOwnerInput {
 input DescriptorCreateWithoutModelsInput {
   description: String
   name: String!
+  sampleCode: String
+  version: String
 }
 
 input DescriptorCreateWithoutOwnerInput {
   description: String
   name: String!
+  sampleCode: String
+  version: String
 }
 
 input DescriptorListRelationFilter {
@@ -512,6 +518,8 @@ input DescriptorOrderByInput {
   id: SortOrder
   name: SortOrder
   ownerId: SortOrder
+  sampleCode: SortOrder
+  version: SortOrder
 }
 
 input DescriptorScalarWhereInput {
@@ -522,16 +530,22 @@ input DescriptorScalarWhereInput {
   id: IntFilter
   name: StringFilter
   ownerId: IntNullableFilter
+  sampleCode: StringNullableFilter
+  version: StringNullableFilter
 }
 
 input DescriptorUpdateInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input DescriptorUpdateManyMutationInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input DescriptorUpdateManyWithWhereWithoutOwnerInput {
@@ -570,11 +584,15 @@ input DescriptorUpdateWithWhereUniqueWithoutOwnerInput {
 input DescriptorUpdateWithoutModelsInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input DescriptorUpdateWithoutOwnerInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input DescriptorUpsertWithWhereUniqueWithoutOwnerInput {
@@ -596,6 +614,8 @@ input DescriptorWhereInput {
   id: IntFilter
   name: StringFilter
   ownerId: IntNullableFilter
+  sampleCode: StringNullableFilter
+  version: StringNullableFilter
 }
 
 input DescriptorWhereUniqueInput {
@@ -673,6 +693,7 @@ type Method {
 input MethodCreateInput {
   description: String
   name: String!
+  version: String
 }
 
 input MethodCreateNestedManyWithoutOwnerInput {
@@ -700,11 +721,13 @@ input MethodCreateOrConnectWithoutOwnerInput {
 input MethodCreateWithoutModelsInput {
   description: String
   name: String!
+  version: String
 }
 
 input MethodCreateWithoutOwnerInput {
   description: String
   name: String!
+  version: String
 }
 
 input MethodListRelationFilter {
@@ -731,6 +754,7 @@ input MethodOrderByInput {
   id: SortOrder
   name: SortOrder
   ownerId: SortOrder
+  version: SortOrder
 }
 
 input MethodScalarWhereInput {
@@ -741,16 +765,19 @@ input MethodScalarWhereInput {
   id: IntFilter
   name: StringFilter
   ownerId: IntNullableFilter
+  version: StringNullableFilter
 }
 
 input MethodUpdateInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input MethodUpdateManyMutationInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input MethodUpdateManyWithWhereWithoutOwnerInput {
@@ -789,11 +816,13 @@ input MethodUpdateWithWhereUniqueWithoutOwnerInput {
 input MethodUpdateWithoutModelsInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input MethodUpdateWithoutOwnerInput {
   description: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input MethodUpsertWithWhereUniqueWithoutOwnerInput {
@@ -815,6 +844,7 @@ input MethodWhereInput {
   id: IntFilter
   name: StringFilter
   ownerId: IntNullableFilter
+  version: StringNullableFilter
 }
 
 input MethodWhereUniqueInput {
@@ -1027,7 +1057,6 @@ type Modelset {
   organization: Organization
   owner: User
   private: Boolean!
-  sampleCode: String
 }
 
 input ModelsetCreateInput {
@@ -1040,7 +1069,7 @@ input ModelsetCreateInput {
   organization: OrganizationCreateNestedOneWithoutModelsetsInput
   private: Boolean
   properties: PropertyCreateNestedManyWithoutModelsetsInput
-  sampleCode: String
+  version: String
 }
 
 input ModelsetCreateNestedManyWithoutContributorsInput {
@@ -1118,7 +1147,7 @@ input ModelsetCreateWithoutArtifactsInput {
   organization: OrganizationCreateNestedOneWithoutModelsetsInput
   private: Boolean
   properties: PropertyCreateNestedManyWithoutModelsetsInput
-  sampleCode: String
+  version: String
 }
 
 input ModelsetCreateWithoutContributorsInput {
@@ -1130,7 +1159,7 @@ input ModelsetCreateWithoutContributorsInput {
   organization: OrganizationCreateNestedOneWithoutModelsetsInput
   private: Boolean
   properties: PropertyCreateNestedManyWithoutModelsetsInput
-  sampleCode: String
+  version: String
 }
 
 input ModelsetCreateWithoutModelsInput {
@@ -1143,7 +1172,7 @@ input ModelsetCreateWithoutModelsInput {
   organization: OrganizationCreateNestedOneWithoutModelsetsInput
   private: Boolean
   properties: PropertyCreateNestedManyWithoutModelsetsInput
-  sampleCode: String
+  version: String
 }
 
 input ModelsetCreateWithoutOrganizationInput {
@@ -1155,7 +1184,7 @@ input ModelsetCreateWithoutOrganizationInput {
   name: String!
   private: Boolean
   properties: PropertyCreateNestedManyWithoutModelsetsInput
-  sampleCode: String
+  version: String
 }
 
 input ModelsetCreateWithoutOwnerInput {
@@ -1168,7 +1197,7 @@ input ModelsetCreateWithoutOwnerInput {
   organization: OrganizationCreateNestedOneWithoutModelsetsInput
   private: Boolean
   properties: PropertyCreateNestedManyWithoutModelsetsInput
-  sampleCode: String
+  version: String
 }
 
 input ModelsetCreateWithoutPropertiesInput {
@@ -1180,7 +1209,7 @@ input ModelsetCreateWithoutPropertiesInput {
   name: String!
   organization: OrganizationCreateNestedOneWithoutModelsetsInput
   private: Boolean
-  sampleCode: String
+  version: String
 }
 
 input ModelsetListRelationFilter {
@@ -1212,7 +1241,7 @@ input ModelsetOrderByInput {
   organizationId: SortOrder
   ownerId: SortOrder
   private: SortOrder
-  sampleCode: SortOrder
+  version: SortOrder
 }
 
 input ModelsetScalarWhereInput {
@@ -1227,7 +1256,7 @@ input ModelsetScalarWhereInput {
   organizationId: IntNullableFilter
   ownerId: IntNullableFilter
   private: BoolFilter
-  sampleCode: StringNullableFilter
+  version: StringNullableFilter
 }
 
 input ModelsetUpdateInput {
@@ -1240,7 +1269,7 @@ input ModelsetUpdateInput {
   organization: OrganizationUpdateOneWithoutModelsetsInput
   private: BoolFieldUpdateOperationsInput
   properties: PropertyUpdateManyWithoutModelsetsInput
-  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input ModelsetUpdateManyMutationInput {
@@ -1249,7 +1278,7 @@ input ModelsetUpdateManyMutationInput {
   keywords: NullableStringFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   private: BoolFieldUpdateOperationsInput
-  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input ModelsetUpdateManyWithWhereWithoutContributorsInput {
@@ -1373,7 +1402,7 @@ input ModelsetUpdateWithoutArtifactsInput {
   organization: OrganizationUpdateOneWithoutModelsetsInput
   private: BoolFieldUpdateOperationsInput
   properties: PropertyUpdateManyWithoutModelsetsInput
-  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input ModelsetUpdateWithoutContributorsInput {
@@ -1385,7 +1414,7 @@ input ModelsetUpdateWithoutContributorsInput {
   organization: OrganizationUpdateOneWithoutModelsetsInput
   private: BoolFieldUpdateOperationsInput
   properties: PropertyUpdateManyWithoutModelsetsInput
-  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input ModelsetUpdateWithoutModelsInput {
@@ -1398,7 +1427,7 @@ input ModelsetUpdateWithoutModelsInput {
   organization: OrganizationUpdateOneWithoutModelsetsInput
   private: BoolFieldUpdateOperationsInput
   properties: PropertyUpdateManyWithoutModelsetsInput
-  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input ModelsetUpdateWithoutOrganizationInput {
@@ -1410,7 +1439,7 @@ input ModelsetUpdateWithoutOrganizationInput {
   name: StringFieldUpdateOperationsInput
   private: BoolFieldUpdateOperationsInput
   properties: PropertyUpdateManyWithoutModelsetsInput
-  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input ModelsetUpdateWithoutOwnerInput {
@@ -1423,7 +1452,7 @@ input ModelsetUpdateWithoutOwnerInput {
   organization: OrganizationUpdateOneWithoutModelsetsInput
   private: BoolFieldUpdateOperationsInput
   properties: PropertyUpdateManyWithoutModelsetsInput
-  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input ModelsetUpdateWithoutPropertiesInput {
@@ -1435,7 +1464,7 @@ input ModelsetUpdateWithoutPropertiesInput {
   name: StringFieldUpdateOperationsInput
   organization: OrganizationUpdateOneWithoutModelsetsInput
   private: BoolFieldUpdateOperationsInput
-  sampleCode: NullableStringFieldUpdateOperationsInput
+  version: NullableStringFieldUpdateOperationsInput
 }
 
 input ModelsetUpsertWithWhereUniqueWithoutContributorsInput {
@@ -1488,7 +1517,7 @@ input ModelsetWhereInput {
   ownerId: IntNullableFilter
   private: BoolFilter
   properties: PropertyListRelationFilter
-  sampleCode: StringNullableFilter
+  version: StringNullableFilter
 }
 
 input ModelsetWhereUniqueInput {

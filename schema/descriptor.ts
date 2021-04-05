@@ -22,7 +22,9 @@ export const Descriptor = objectType({
     t.model.id()
     t.model.owner()
     t.model.name()
+    t.model.version()
     t.model.description()
+    t.model.sampleCode()
     t.model.models({
       complexity: 2,
       pagination: true,

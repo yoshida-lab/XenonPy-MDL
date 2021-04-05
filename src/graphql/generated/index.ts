@@ -169,7 +169,6 @@ export type Modelset = {
   description?: Maybe<Scalars['String']>;
   /** keywords split by comma or white space */
   keywords?: Maybe<Scalars['String']>;
-  sampleCode?: Maybe<Scalars['String']>;
   deprecated: Scalars['Boolean'];
   private: Scalars['Boolean'];
   organization?: Maybe<Organization>;
@@ -545,7 +544,9 @@ export type DescriptorWhereInput = {
   NOT?: Maybe<Array<DescriptorWhereInput>>;
   id?: Maybe<IntFilter>;
   name?: Maybe<StringFilter>;
+  version?: Maybe<StringNullableFilter>;
   description?: Maybe<StringNullableFilter>;
+  sampleCode?: Maybe<StringNullableFilter>;
   ownerId?: Maybe<IntNullableFilter>;
 };
 
@@ -556,12 +557,16 @@ export type QueryDescriptorsOrderByInput = {
 
 export type DescriptorCreateInput = {
   name: Scalars['String'];
+  version?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
+  sampleCode?: Maybe<Scalars['String']>;
 };
 
 export type DescriptorUpdateInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type MethodModelsOrderByInput = {
@@ -589,6 +594,7 @@ export type MethodWhereInput = {
   id?: Maybe<IntFilter>;
   name?: Maybe<StringFilter>;
   description?: Maybe<StringNullableFilter>;
+  version?: Maybe<StringNullableFilter>;
   ownerId?: Maybe<IntNullableFilter>;
 };
 
@@ -600,11 +606,13 @@ export type QueryMethodsOrderByInput = {
 export type MethodCreateInput = {
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  version?: Maybe<Scalars['String']>;
 };
 
 export type MethodUpdateInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 
@@ -657,6 +665,24 @@ export type AffectedRowsOutput = {
   count: Scalars['Int'];
 };
 
+export type ModelUpdateInput = {
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  keywords?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  deprecated?: Maybe<BoolFieldUpdateOperationsInput>;
+  succeed?: Maybe<BoolFieldUpdateOperationsInput>;
+  trainingEnv?: Maybe<Scalars['Json']>;
+  trainingInfo?: Maybe<Scalars['Json']>;
+  downloads?: Maybe<NullableIntFieldUpdateOperationsInput>;
+  artifact?: Maybe<ArtifactUpdateOneRequiredWithoutModelInput>;
+  descriptor?: Maybe<DescriptorUpdateOneWithoutModelsInput>;
+  method?: Maybe<MethodUpdateOneWithoutModelsInput>;
+  property?: Maybe<PropertyUpdateOneWithoutModelsInput>;
+  modelset?: Maybe<ModelsetUpdateOneWithoutModelsInput>;
+  clsMetric?: Maybe<ClassificationMetricUpdateOneWithoutModelInput>;
+  regMetric?: Maybe<RegressionMetricUpdateOneWithoutModelInput>;
+};
+
 export type ModelUpdateManyMutationInput = {
   createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
   updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
@@ -700,9 +726,9 @@ export type ModelsetWhereInput = {
   id?: Maybe<IntFilter>;
   name?: Maybe<StringFilter>;
   description?: Maybe<StringNullableFilter>;
+  version?: Maybe<StringNullableFilter>;
   keywords?: Maybe<StringNullableFilter>;
   private?: Maybe<BoolFilter>;
-  sampleCode?: Maybe<StringNullableFilter>;
   deprecated?: Maybe<BoolFilter>;
   organizationId?: Maybe<IntNullableFilter>;
   organization?: Maybe<OrganizationWhereInput>;
@@ -720,9 +746,9 @@ export type QueryModelsetsOrderByInput = {
 export type ModelsetCreateInput = {
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  version?: Maybe<Scalars['String']>;
   keywords?: Maybe<Scalars['String']>;
   private?: Maybe<Scalars['Boolean']>;
-  sampleCode?: Maybe<Scalars['String']>;
   deprecated?: Maybe<Scalars['Boolean']>;
   organization?: Maybe<OrganizationCreateNestedOneWithoutModelsetsInput>;
   artifacts?: Maybe<ArtifactCreateNestedManyWithoutModelsetInput>;
@@ -733,9 +759,9 @@ export type ModelsetCreateInput = {
 export type ModelsetUpdateInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
   keywords?: Maybe<NullableStringFieldUpdateOperationsInput>;
   private?: Maybe<BoolFieldUpdateOperationsInput>;
-  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
   deprecated?: Maybe<BoolFieldUpdateOperationsInput>;
   organization?: Maybe<OrganizationUpdateOneWithoutModelsetsInput>;
   artifacts?: Maybe<ArtifactUpdateManyWithoutModelsetInput>;
@@ -970,7 +996,9 @@ export enum SortOrder {
 export type DescriptorOrderByInput = {
   id?: Maybe<SortOrder>;
   name?: Maybe<SortOrder>;
+  version?: Maybe<SortOrder>;
   description?: Maybe<SortOrder>;
+  sampleCode?: Maybe<SortOrder>;
   ownerId?: Maybe<SortOrder>;
 };
 
@@ -978,6 +1006,7 @@ export type MethodOrderByInput = {
   id?: Maybe<SortOrder>;
   name?: Maybe<SortOrder>;
   description?: Maybe<SortOrder>;
+  version?: Maybe<SortOrder>;
   ownerId?: Maybe<SortOrder>;
 };
 
@@ -994,9 +1023,9 @@ export type ModelsetOrderByInput = {
   id?: Maybe<SortOrder>;
   name?: Maybe<SortOrder>;
   description?: Maybe<SortOrder>;
+  version?: Maybe<SortOrder>;
   keywords?: Maybe<SortOrder>;
   private?: Maybe<SortOrder>;
-  sampleCode?: Maybe<SortOrder>;
   deprecated?: Maybe<SortOrder>;
   organizationId?: Maybe<SortOrder>;
   organization?: Maybe<OrganizationOrderByInput>;
@@ -1064,6 +1093,74 @@ export type NullableIntFieldUpdateOperationsInput = {
   decrement?: Maybe<Scalars['Int']>;
   multiply?: Maybe<Scalars['Int']>;
   divide?: Maybe<Scalars['Int']>;
+};
+
+export type ArtifactUpdateOneRequiredWithoutModelInput = {
+  create?: Maybe<ArtifactCreateWithoutModelInput>;
+  connectOrCreate?: Maybe<ArtifactCreateOrConnectWithoutModelInput>;
+  upsert?: Maybe<ArtifactUpsertWithoutModelInput>;
+  connect?: Maybe<ArtifactWhereUniqueInput>;
+  update?: Maybe<ArtifactUpdateWithoutModelInput>;
+};
+
+export type DescriptorUpdateOneWithoutModelsInput = {
+  create?: Maybe<DescriptorCreateWithoutModelsInput>;
+  connectOrCreate?: Maybe<DescriptorCreateOrConnectWithoutModelsInput>;
+  upsert?: Maybe<DescriptorUpsertWithoutModelsInput>;
+  connect?: Maybe<DescriptorWhereUniqueInput>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  delete?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<DescriptorUpdateWithoutModelsInput>;
+};
+
+export type MethodUpdateOneWithoutModelsInput = {
+  create?: Maybe<MethodCreateWithoutModelsInput>;
+  connectOrCreate?: Maybe<MethodCreateOrConnectWithoutModelsInput>;
+  upsert?: Maybe<MethodUpsertWithoutModelsInput>;
+  connect?: Maybe<MethodWhereUniqueInput>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  delete?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<MethodUpdateWithoutModelsInput>;
+};
+
+export type PropertyUpdateOneWithoutModelsInput = {
+  create?: Maybe<PropertyCreateWithoutModelsInput>;
+  connectOrCreate?: Maybe<PropertyCreateOrConnectWithoutModelsInput>;
+  upsert?: Maybe<PropertyUpsertWithoutModelsInput>;
+  connect?: Maybe<PropertyWhereUniqueInput>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  delete?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<PropertyUpdateWithoutModelsInput>;
+};
+
+export type ModelsetUpdateOneWithoutModelsInput = {
+  create?: Maybe<ModelsetCreateWithoutModelsInput>;
+  connectOrCreate?: Maybe<ModelsetCreateOrConnectWithoutModelsInput>;
+  upsert?: Maybe<ModelsetUpsertWithoutModelsInput>;
+  connect?: Maybe<ModelsetWhereUniqueInput>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  delete?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<ModelsetUpdateWithoutModelsInput>;
+};
+
+export type ClassificationMetricUpdateOneWithoutModelInput = {
+  create?: Maybe<ClassificationMetricCreateWithoutModelInput>;
+  connectOrCreate?: Maybe<ClassificationMetricCreateOrConnectWithoutModelInput>;
+  upsert?: Maybe<ClassificationMetricUpsertWithoutModelInput>;
+  connect?: Maybe<ClassificationMetricWhereUniqueInput>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  delete?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<ClassificationMetricUpdateWithoutModelInput>;
+};
+
+export type RegressionMetricUpdateOneWithoutModelInput = {
+  create?: Maybe<RegressionMetricCreateWithoutModelInput>;
+  connectOrCreate?: Maybe<RegressionMetricCreateOrConnectWithoutModelInput>;
+  upsert?: Maybe<RegressionMetricUpsertWithoutModelInput>;
+  connect?: Maybe<RegressionMetricWhereUniqueInput>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  delete?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<RegressionMetricUpdateWithoutModelInput>;
 };
 
 export type ArtifactListRelationFilter = {
@@ -1390,6 +1487,218 @@ export type OrganizationOrderByInput = {
   ownerId?: Maybe<SortOrder>;
 };
 
+export type ArtifactCreateWithoutModelInput = {
+  path: Scalars['String'];
+  etag: Scalars['String'];
+  filename: Scalars['String'];
+  organization?: Maybe<OrganizationCreateNestedOneWithoutArtifactsInput>;
+  modelset?: Maybe<ModelsetCreateNestedOneWithoutArtifactsInput>;
+};
+
+export type ArtifactCreateOrConnectWithoutModelInput = {
+  where: ArtifactWhereUniqueInput;
+  create: ArtifactCreateWithoutModelInput;
+};
+
+export type ArtifactUpsertWithoutModelInput = {
+  update: ArtifactUpdateWithoutModelInput;
+  create: ArtifactCreateWithoutModelInput;
+};
+
+export type ArtifactUpdateWithoutModelInput = {
+  path?: Maybe<StringFieldUpdateOperationsInput>;
+  etag?: Maybe<StringFieldUpdateOperationsInput>;
+  filename?: Maybe<StringFieldUpdateOperationsInput>;
+  organization?: Maybe<OrganizationUpdateOneWithoutArtifactsInput>;
+  modelset?: Maybe<ModelsetUpdateOneWithoutArtifactsInput>;
+};
+
+export type DescriptorCreateWithoutModelsInput = {
+  name: Scalars['String'];
+  version?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  sampleCode?: Maybe<Scalars['String']>;
+};
+
+export type DescriptorCreateOrConnectWithoutModelsInput = {
+  where: DescriptorWhereUniqueInput;
+  create: DescriptorCreateWithoutModelsInput;
+};
+
+export type DescriptorUpsertWithoutModelsInput = {
+  update: DescriptorUpdateWithoutModelsInput;
+  create: DescriptorCreateWithoutModelsInput;
+};
+
+export type DescriptorUpdateWithoutModelsInput = {
+  name?: Maybe<StringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
+};
+
+export type MethodCreateWithoutModelsInput = {
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  version?: Maybe<Scalars['String']>;
+};
+
+export type MethodCreateOrConnectWithoutModelsInput = {
+  where: MethodWhereUniqueInput;
+  create: MethodCreateWithoutModelsInput;
+};
+
+export type MethodUpsertWithoutModelsInput = {
+  update: MethodUpdateWithoutModelsInput;
+  create: MethodCreateWithoutModelsInput;
+};
+
+export type MethodUpdateWithoutModelsInput = {
+  name?: Maybe<StringFieldUpdateOperationsInput>;
+  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
+};
+
+export type PropertyCreateWithoutModelsInput = {
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  symbol?: Maybe<Scalars['String']>;
+  unit?: Maybe<Scalars['String']>;
+  modelsets?: Maybe<ModelsetCreateNestedManyWithoutPropertiesInput>;
+};
+
+export type PropertyCreateOrConnectWithoutModelsInput = {
+  where: PropertyWhereUniqueInput;
+  create: PropertyCreateWithoutModelsInput;
+};
+
+export type PropertyUpsertWithoutModelsInput = {
+  update: PropertyUpdateWithoutModelsInput;
+  create: PropertyCreateWithoutModelsInput;
+};
+
+export type PropertyUpdateWithoutModelsInput = {
+  name?: Maybe<StringFieldUpdateOperationsInput>;
+  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  symbol?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  unit?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  modelsets?: Maybe<ModelsetUpdateManyWithoutPropertiesInput>;
+};
+
+export type ModelsetCreateWithoutModelsInput = {
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  version?: Maybe<Scalars['String']>;
+  keywords?: Maybe<Scalars['String']>;
+  private?: Maybe<Scalars['Boolean']>;
+  deprecated?: Maybe<Scalars['Boolean']>;
+  organization?: Maybe<OrganizationCreateNestedOneWithoutModelsetsInput>;
+  artifacts?: Maybe<ArtifactCreateNestedManyWithoutModelsetInput>;
+  contributors?: Maybe<UserCreateNestedManyWithoutContributedModelSetsInput>;
+  properties?: Maybe<PropertyCreateNestedManyWithoutModelsetsInput>;
+};
+
+export type ModelsetCreateOrConnectWithoutModelsInput = {
+  where: ModelsetWhereUniqueInput;
+  create: ModelsetCreateWithoutModelsInput;
+};
+
+export type ModelsetUpsertWithoutModelsInput = {
+  update: ModelsetUpdateWithoutModelsInput;
+  create: ModelsetCreateWithoutModelsInput;
+};
+
+export type ModelsetUpdateWithoutModelsInput = {
+  name?: Maybe<StringFieldUpdateOperationsInput>;
+  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  keywords?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  private?: Maybe<BoolFieldUpdateOperationsInput>;
+  deprecated?: Maybe<BoolFieldUpdateOperationsInput>;
+  organization?: Maybe<OrganizationUpdateOneWithoutModelsetsInput>;
+  artifacts?: Maybe<ArtifactUpdateManyWithoutModelsetInput>;
+  contributors?: Maybe<UserUpdateManyWithoutContributedModelSetsInput>;
+  properties?: Maybe<PropertyUpdateManyWithoutModelsetsInput>;
+};
+
+export type ClassificationMetricCreateWithoutModelInput = {
+  accuracy?: Maybe<Scalars['Float']>;
+  precision?: Maybe<Scalars['Float']>;
+  recall?: Maybe<Scalars['Float']>;
+  f1?: Maybe<Scalars['Float']>;
+  sensitivity?: Maybe<Scalars['Float']>;
+  prevalence?: Maybe<Scalars['Float']>;
+  specificity?: Maybe<Scalars['Float']>;
+  ppv?: Maybe<Scalars['Float']>;
+  npv?: Maybe<Scalars['Float']>;
+  supplementary?: Maybe<Scalars['Json']>;
+};
+
+export type ClassificationMetricCreateOrConnectWithoutModelInput = {
+  where: ClassificationMetricWhereUniqueInput;
+  create: ClassificationMetricCreateWithoutModelInput;
+};
+
+export type ClassificationMetricUpsertWithoutModelInput = {
+  update: ClassificationMetricUpdateWithoutModelInput;
+  create: ClassificationMetricCreateWithoutModelInput;
+};
+
+export type ClassificationMetricWhereUniqueInput = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type ClassificationMetricUpdateWithoutModelInput = {
+  accuracy?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  precision?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  recall?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  f1?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  sensitivity?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  prevalence?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  specificity?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  ppv?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  npv?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  supplementary?: Maybe<Scalars['Json']>;
+};
+
+export type RegressionMetricCreateWithoutModelInput = {
+  meanAbsError?: Maybe<Scalars['Float']>;
+  maxAbsError?: Maybe<Scalars['Float']>;
+  meanSquareError?: Maybe<Scalars['Float']>;
+  rootMeanSquareError?: Maybe<Scalars['Float']>;
+  r2?: Maybe<Scalars['Float']>;
+  pValue?: Maybe<Scalars['Float']>;
+  spearmanCorr?: Maybe<Scalars['Float']>;
+  pearsonCorr?: Maybe<Scalars['Float']>;
+  supplementary?: Maybe<Scalars['Json']>;
+};
+
+export type RegressionMetricCreateOrConnectWithoutModelInput = {
+  where: RegressionMetricWhereUniqueInput;
+  create: RegressionMetricCreateWithoutModelInput;
+};
+
+export type RegressionMetricUpsertWithoutModelInput = {
+  update: RegressionMetricUpdateWithoutModelInput;
+  create: RegressionMetricCreateWithoutModelInput;
+};
+
+export type RegressionMetricWhereUniqueInput = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type RegressionMetricUpdateWithoutModelInput = {
+  meanAbsError?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  maxAbsError?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  meanSquareError?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  rootMeanSquareError?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  r2?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  pValue?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  spearmanCorr?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  pearsonCorr?: Maybe<NullableFloatFieldUpdateOperationsInput>;
+  supplementary?: Maybe<Scalars['Json']>;
+};
+
 export type UserWhereInput = {
   AND?: Maybe<Array<UserWhereInput>>;
   OR?: Maybe<Array<UserWhereInput>>;
@@ -1579,9 +1888,9 @@ export type PropertyScalarWhereInput = {
 export type ModelsetCreateWithoutPropertiesInput = {
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  version?: Maybe<Scalars['String']>;
   keywords?: Maybe<Scalars['String']>;
   private?: Maybe<Scalars['Boolean']>;
-  sampleCode?: Maybe<Scalars['String']>;
   deprecated?: Maybe<Scalars['Boolean']>;
   organization?: Maybe<OrganizationCreateNestedOneWithoutModelsetsInput>;
   artifacts?: Maybe<ArtifactCreateNestedManyWithoutModelsetInput>;
@@ -1616,9 +1925,9 @@ export type ModelsetScalarWhereInput = {
   id?: Maybe<IntFilter>;
   name?: Maybe<StringFilter>;
   description?: Maybe<StringNullableFilter>;
+  version?: Maybe<StringNullableFilter>;
   keywords?: Maybe<StringNullableFilter>;
   private?: Maybe<BoolFilter>;
-  sampleCode?: Maybe<StringNullableFilter>;
   deprecated?: Maybe<BoolFilter>;
   organizationId?: Maybe<IntNullableFilter>;
   ownerId?: Maybe<IntNullableFilter>;
@@ -1667,7 +1976,9 @@ export type ArtifactUpdateManyWithWhereWithoutOwnerInput = {
 
 export type DescriptorCreateWithoutOwnerInput = {
   name: Scalars['String'];
+  version?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
+  sampleCode?: Maybe<Scalars['String']>;
 };
 
 export type DescriptorCreateOrConnectWithoutOwnerInput = {
@@ -1697,13 +2008,16 @@ export type DescriptorScalarWhereInput = {
   NOT?: Maybe<Array<DescriptorScalarWhereInput>>;
   id?: Maybe<IntFilter>;
   name?: Maybe<StringFilter>;
+  version?: Maybe<StringNullableFilter>;
   description?: Maybe<StringNullableFilter>;
+  sampleCode?: Maybe<StringNullableFilter>;
   ownerId?: Maybe<IntNullableFilter>;
 };
 
 export type MethodCreateWithoutOwnerInput = {
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  version?: Maybe<Scalars['String']>;
 };
 
 export type MethodCreateOrConnectWithoutOwnerInput = {
@@ -1734,15 +2048,16 @@ export type MethodScalarWhereInput = {
   id?: Maybe<IntFilter>;
   name?: Maybe<StringFilter>;
   description?: Maybe<StringNullableFilter>;
+  version?: Maybe<StringNullableFilter>;
   ownerId?: Maybe<IntNullableFilter>;
 };
 
 export type ModelsetCreateWithoutOwnerInput = {
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  version?: Maybe<Scalars['String']>;
   keywords?: Maybe<Scalars['String']>;
   private?: Maybe<Scalars['Boolean']>;
-  sampleCode?: Maybe<Scalars['String']>;
   deprecated?: Maybe<Scalars['Boolean']>;
   organization?: Maybe<OrganizationCreateNestedOneWithoutModelsetsInput>;
   artifacts?: Maybe<ArtifactCreateNestedManyWithoutModelsetInput>;
@@ -1842,9 +2157,9 @@ export type PropertyUpdateManyWithWhereWithoutOwnerInput = {
 export type ModelsetCreateWithoutContributorsInput = {
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  version?: Maybe<Scalars['String']>;
   keywords?: Maybe<Scalars['String']>;
   private?: Maybe<Scalars['Boolean']>;
-  sampleCode?: Maybe<Scalars['String']>;
   deprecated?: Maybe<Scalars['Boolean']>;
   organization?: Maybe<OrganizationCreateNestedOneWithoutModelsetsInput>;
   artifacts?: Maybe<ArtifactCreateNestedManyWithoutModelsetInput>;
@@ -1911,6 +2226,46 @@ export type NestedFloatNullableFilter = {
   not?: Maybe<NestedFloatNullableFilter>;
 };
 
+export type OrganizationCreateNestedOneWithoutArtifactsInput = {
+  create?: Maybe<OrganizationCreateWithoutArtifactsInput>;
+  connectOrCreate?: Maybe<OrganizationCreateOrConnectWithoutArtifactsInput>;
+  connect?: Maybe<OrganizationWhereUniqueInput>;
+};
+
+export type ModelsetCreateNestedOneWithoutArtifactsInput = {
+  create?: Maybe<ModelsetCreateWithoutArtifactsInput>;
+  connectOrCreate?: Maybe<ModelsetCreateOrConnectWithoutArtifactsInput>;
+  connect?: Maybe<ModelsetWhereUniqueInput>;
+};
+
+export type OrganizationUpdateOneWithoutArtifactsInput = {
+  create?: Maybe<OrganizationCreateWithoutArtifactsInput>;
+  connectOrCreate?: Maybe<OrganizationCreateOrConnectWithoutArtifactsInput>;
+  upsert?: Maybe<OrganizationUpsertWithoutArtifactsInput>;
+  connect?: Maybe<OrganizationWhereUniqueInput>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  delete?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<OrganizationUpdateWithoutArtifactsInput>;
+};
+
+export type ModelsetUpdateOneWithoutArtifactsInput = {
+  create?: Maybe<ModelsetCreateWithoutArtifactsInput>;
+  connectOrCreate?: Maybe<ModelsetCreateOrConnectWithoutArtifactsInput>;
+  upsert?: Maybe<ModelsetUpsertWithoutArtifactsInput>;
+  connect?: Maybe<ModelsetWhereUniqueInput>;
+  disconnect?: Maybe<Scalars['Boolean']>;
+  delete?: Maybe<Scalars['Boolean']>;
+  update?: Maybe<ModelsetUpdateWithoutArtifactsInput>;
+};
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: Maybe<Scalars['Float']>;
+  increment?: Maybe<Scalars['Float']>;
+  decrement?: Maybe<Scalars['Float']>;
+  multiply?: Maybe<Scalars['Float']>;
+  divide?: Maybe<Scalars['Float']>;
+};
+
 export type EnumRoleFilter = {
   equals?: Maybe<Role>;
   in?: Maybe<Array<Role>>;
@@ -1952,12 +2307,6 @@ export type ModelCreateNestedOneWithoutArtifactInput = {
   create?: Maybe<ModelCreateWithoutArtifactInput>;
   connectOrCreate?: Maybe<ModelCreateOrConnectWithoutArtifactInput>;
   connect?: Maybe<ModelWhereUniqueInput>;
-};
-
-export type OrganizationCreateNestedOneWithoutArtifactsInput = {
-  create?: Maybe<OrganizationCreateWithoutArtifactsInput>;
-  connectOrCreate?: Maybe<OrganizationCreateOrConnectWithoutArtifactsInput>;
-  connect?: Maybe<OrganizationWhereUniqueInput>;
 };
 
 export type ArtifactCreateNestedManyWithoutOwnerInput = {
@@ -2090,9 +2439,9 @@ export type PropertyUpdateManyMutationInput = {
 export type ModelsetUpdateWithoutPropertiesInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
   keywords?: Maybe<NullableStringFieldUpdateOperationsInput>;
   private?: Maybe<BoolFieldUpdateOperationsInput>;
-  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
   deprecated?: Maybe<BoolFieldUpdateOperationsInput>;
   organization?: Maybe<OrganizationUpdateOneWithoutModelsetsInput>;
   artifacts?: Maybe<ArtifactUpdateManyWithoutModelsetInput>;
@@ -2102,16 +2451,10 @@ export type ModelsetUpdateWithoutPropertiesInput = {
 export type ModelsetUpdateManyMutationInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
   keywords?: Maybe<NullableStringFieldUpdateOperationsInput>;
   private?: Maybe<BoolFieldUpdateOperationsInput>;
-  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
   deprecated?: Maybe<BoolFieldUpdateOperationsInput>;
-};
-
-export type ModelsetCreateNestedOneWithoutArtifactsInput = {
-  create?: Maybe<ModelsetCreateWithoutArtifactsInput>;
-  connectOrCreate?: Maybe<ModelsetCreateOrConnectWithoutArtifactsInput>;
-  connect?: Maybe<ModelsetWhereUniqueInput>;
 };
 
 export type ArtifactUpdateWithoutOwnerInput = {
@@ -2125,30 +2468,36 @@ export type ArtifactUpdateWithoutOwnerInput = {
 
 export type DescriptorUpdateWithoutOwnerInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type DescriptorUpdateManyMutationInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type MethodUpdateWithoutOwnerInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type MethodUpdateManyMutationInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type ModelsetUpdateWithoutOwnerInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
   keywords?: Maybe<NullableStringFieldUpdateOperationsInput>;
   private?: Maybe<BoolFieldUpdateOperationsInput>;
-  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
   deprecated?: Maybe<BoolFieldUpdateOperationsInput>;
   organization?: Maybe<OrganizationUpdateOneWithoutModelsetsInput>;
   artifacts?: Maybe<ArtifactUpdateManyWithoutModelsetInput>;
@@ -2186,9 +2535,9 @@ export type PropertyUpdateWithoutOwnerInput = {
 export type ModelsetUpdateWithoutContributorsInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
   keywords?: Maybe<NullableStringFieldUpdateOperationsInput>;
   private?: Maybe<BoolFieldUpdateOperationsInput>;
-  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
   deprecated?: Maybe<BoolFieldUpdateOperationsInput>;
   organization?: Maybe<OrganizationUpdateOneWithoutModelsetsInput>;
   artifacts?: Maybe<ArtifactUpdateManyWithoutModelsetInput>;
@@ -2200,6 +2549,64 @@ export type OrganizationUpdateWithoutMembersInput = {
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
   artifacts?: Maybe<ArtifactUpdateManyWithoutOrganizationInput>;
   modelsets?: Maybe<ModelsetUpdateManyWithoutOrganizationInput>;
+};
+
+export type OrganizationCreateWithoutArtifactsInput = {
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  modelsets?: Maybe<ModelsetCreateNestedManyWithoutOrganizationInput>;
+  members?: Maybe<UserCreateNestedManyWithoutJoinedOrganizationsInput>;
+};
+
+export type OrganizationCreateOrConnectWithoutArtifactsInput = {
+  where: OrganizationWhereUniqueInput;
+  create: OrganizationCreateWithoutArtifactsInput;
+};
+
+export type ModelsetCreateWithoutArtifactsInput = {
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  version?: Maybe<Scalars['String']>;
+  keywords?: Maybe<Scalars['String']>;
+  private?: Maybe<Scalars['Boolean']>;
+  deprecated?: Maybe<Scalars['Boolean']>;
+  organization?: Maybe<OrganizationCreateNestedOneWithoutModelsetsInput>;
+  contributors?: Maybe<UserCreateNestedManyWithoutContributedModelSetsInput>;
+  properties?: Maybe<PropertyCreateNestedManyWithoutModelsetsInput>;
+};
+
+export type ModelsetCreateOrConnectWithoutArtifactsInput = {
+  where: ModelsetWhereUniqueInput;
+  create: ModelsetCreateWithoutArtifactsInput;
+};
+
+export type OrganizationUpsertWithoutArtifactsInput = {
+  update: OrganizationUpdateWithoutArtifactsInput;
+  create: OrganizationCreateWithoutArtifactsInput;
+};
+
+export type OrganizationUpdateWithoutArtifactsInput = {
+  name?: Maybe<StringFieldUpdateOperationsInput>;
+  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  modelsets?: Maybe<ModelsetUpdateManyWithoutOrganizationInput>;
+  members?: Maybe<UserUpdateManyWithoutJoinedOrganizationsInput>;
+};
+
+export type ModelsetUpsertWithoutArtifactsInput = {
+  update: ModelsetUpdateWithoutArtifactsInput;
+  create: ModelsetCreateWithoutArtifactsInput;
+};
+
+export type ModelsetUpdateWithoutArtifactsInput = {
+  name?: Maybe<StringFieldUpdateOperationsInput>;
+  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  keywords?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  private?: Maybe<BoolFieldUpdateOperationsInput>;
+  deprecated?: Maybe<BoolFieldUpdateOperationsInput>;
+  organization?: Maybe<OrganizationUpdateOneWithoutModelsetsInput>;
+  contributors?: Maybe<UserUpdateManyWithoutContributedModelSetsInput>;
+  properties?: Maybe<PropertyUpdateManyWithoutModelsetsInput>;
 };
 
 export type NestedEnumRoleFilter = {
@@ -2268,18 +2675,6 @@ export type ModelCreateOrConnectWithoutArtifactInput = {
   create: ModelCreateWithoutArtifactInput;
 };
 
-export type OrganizationCreateWithoutArtifactsInput = {
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  modelsets?: Maybe<ModelsetCreateNestedManyWithoutOrganizationInput>;
-  members?: Maybe<UserCreateNestedManyWithoutJoinedOrganizationsInput>;
-};
-
-export type OrganizationCreateOrConnectWithoutArtifactsInput = {
-  where: OrganizationWhereUniqueInput;
-  create: OrganizationCreateWithoutArtifactsInput;
-};
-
 export type ArtifactUpsertWithWhereUniqueWithoutOrganizationInput = {
   where: ArtifactWhereUniqueInput;
   update: ArtifactUpdateWithoutOrganizationInput;
@@ -2322,53 +2717,16 @@ export type ModelUpdateOneWithoutArtifactInput = {
   update?: Maybe<ModelUpdateWithoutArtifactInput>;
 };
 
-export type OrganizationUpdateOneWithoutArtifactsInput = {
-  create?: Maybe<OrganizationCreateWithoutArtifactsInput>;
-  connectOrCreate?: Maybe<OrganizationCreateOrConnectWithoutArtifactsInput>;
-  upsert?: Maybe<OrganizationUpsertWithoutArtifactsInput>;
-  connect?: Maybe<OrganizationWhereUniqueInput>;
-  disconnect?: Maybe<Scalars['Boolean']>;
-  delete?: Maybe<Scalars['Boolean']>;
-  update?: Maybe<OrganizationUpdateWithoutArtifactsInput>;
-};
-
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: Maybe<Role>;
-};
-
-export type ModelsetCreateWithoutArtifactsInput = {
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  keywords?: Maybe<Scalars['String']>;
-  private?: Maybe<Scalars['Boolean']>;
-  sampleCode?: Maybe<Scalars['String']>;
-  deprecated?: Maybe<Scalars['Boolean']>;
-  organization?: Maybe<OrganizationCreateNestedOneWithoutModelsetsInput>;
-  contributors?: Maybe<UserCreateNestedManyWithoutContributedModelSetsInput>;
-  properties?: Maybe<PropertyCreateNestedManyWithoutModelsetsInput>;
-};
-
-export type ModelsetCreateOrConnectWithoutArtifactsInput = {
-  where: ModelsetWhereUniqueInput;
-  create: ModelsetCreateWithoutArtifactsInput;
-};
-
-export type ModelsetUpdateOneWithoutArtifactsInput = {
-  create?: Maybe<ModelsetCreateWithoutArtifactsInput>;
-  connectOrCreate?: Maybe<ModelsetCreateOrConnectWithoutArtifactsInput>;
-  upsert?: Maybe<ModelsetUpsertWithoutArtifactsInput>;
-  connect?: Maybe<ModelsetWhereUniqueInput>;
-  disconnect?: Maybe<Scalars['Boolean']>;
-  delete?: Maybe<Scalars['Boolean']>;
-  update?: Maybe<ModelsetUpdateWithoutArtifactsInput>;
 };
 
 export type ModelsetCreateWithoutOrganizationInput = {
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  version?: Maybe<Scalars['String']>;
   keywords?: Maybe<Scalars['String']>;
   private?: Maybe<Scalars['Boolean']>;
-  sampleCode?: Maybe<Scalars['String']>;
   deprecated?: Maybe<Scalars['Boolean']>;
   artifacts?: Maybe<ArtifactCreateNestedManyWithoutModelsetInput>;
   contributors?: Maybe<UserCreateNestedManyWithoutContributedModelSetsInput>;
@@ -2484,35 +2842,6 @@ export type ModelUpdateWithoutArtifactInput = {
   regMetric?: Maybe<RegressionMetricUpdateOneWithoutModelInput>;
 };
 
-export type OrganizationUpsertWithoutArtifactsInput = {
-  update: OrganizationUpdateWithoutArtifactsInput;
-  create: OrganizationCreateWithoutArtifactsInput;
-};
-
-export type OrganizationUpdateWithoutArtifactsInput = {
-  name?: Maybe<StringFieldUpdateOperationsInput>;
-  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
-  modelsets?: Maybe<ModelsetUpdateManyWithoutOrganizationInput>;
-  members?: Maybe<UserUpdateManyWithoutJoinedOrganizationsInput>;
-};
-
-export type ModelsetUpsertWithoutArtifactsInput = {
-  update: ModelsetUpdateWithoutArtifactsInput;
-  create: ModelsetCreateWithoutArtifactsInput;
-};
-
-export type ModelsetUpdateWithoutArtifactsInput = {
-  name?: Maybe<StringFieldUpdateOperationsInput>;
-  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
-  keywords?: Maybe<NullableStringFieldUpdateOperationsInput>;
-  private?: Maybe<BoolFieldUpdateOperationsInput>;
-  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
-  deprecated?: Maybe<BoolFieldUpdateOperationsInput>;
-  organization?: Maybe<OrganizationUpdateOneWithoutModelsetsInput>;
-  contributors?: Maybe<UserUpdateManyWithoutContributedModelSetsInput>;
-  properties?: Maybe<PropertyUpdateManyWithoutModelsetsInput>;
-};
-
 export type ModelsetUpsertWithWhereUniqueWithoutOrganizationInput = {
   where: ModelsetWhereUniqueInput;
   update: ModelsetUpdateWithoutOrganizationInput;
@@ -2529,264 +2858,16 @@ export type ModelsetUpdateManyWithWhereWithoutOrganizationInput = {
   data: ModelsetUpdateManyMutationInput;
 };
 
-export type DescriptorCreateWithoutModelsInput = {
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-};
-
-export type DescriptorCreateOrConnectWithoutModelsInput = {
-  where: DescriptorWhereUniqueInput;
-  create: DescriptorCreateWithoutModelsInput;
-};
-
-export type MethodCreateWithoutModelsInput = {
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-};
-
-export type MethodCreateOrConnectWithoutModelsInput = {
-  where: MethodWhereUniqueInput;
-  create: MethodCreateWithoutModelsInput;
-};
-
-export type PropertyCreateWithoutModelsInput = {
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  symbol?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
-  modelsets?: Maybe<ModelsetCreateNestedManyWithoutPropertiesInput>;
-};
-
-export type PropertyCreateOrConnectWithoutModelsInput = {
-  where: PropertyWhereUniqueInput;
-  create: PropertyCreateWithoutModelsInput;
-};
-
-export type ModelsetCreateWithoutModelsInput = {
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  keywords?: Maybe<Scalars['String']>;
-  private?: Maybe<Scalars['Boolean']>;
-  sampleCode?: Maybe<Scalars['String']>;
-  deprecated?: Maybe<Scalars['Boolean']>;
-  organization?: Maybe<OrganizationCreateNestedOneWithoutModelsetsInput>;
-  artifacts?: Maybe<ArtifactCreateNestedManyWithoutModelsetInput>;
-  contributors?: Maybe<UserCreateNestedManyWithoutContributedModelSetsInput>;
-  properties?: Maybe<PropertyCreateNestedManyWithoutModelsetsInput>;
-};
-
-export type ModelsetCreateOrConnectWithoutModelsInput = {
-  where: ModelsetWhereUniqueInput;
-  create: ModelsetCreateWithoutModelsInput;
-};
-
-export type ClassificationMetricCreateWithoutModelInput = {
-  accuracy?: Maybe<Scalars['Float']>;
-  precision?: Maybe<Scalars['Float']>;
-  recall?: Maybe<Scalars['Float']>;
-  f1?: Maybe<Scalars['Float']>;
-  sensitivity?: Maybe<Scalars['Float']>;
-  prevalence?: Maybe<Scalars['Float']>;
-  specificity?: Maybe<Scalars['Float']>;
-  ppv?: Maybe<Scalars['Float']>;
-  npv?: Maybe<Scalars['Float']>;
-  supplementary?: Maybe<Scalars['Json']>;
-};
-
-export type ClassificationMetricCreateOrConnectWithoutModelInput = {
-  where: ClassificationMetricWhereUniqueInput;
-  create: ClassificationMetricCreateWithoutModelInput;
-};
-
-export type ClassificationMetricWhereUniqueInput = {
-  id?: Maybe<Scalars['Int']>;
-};
-
-export type RegressionMetricCreateWithoutModelInput = {
-  meanAbsError?: Maybe<Scalars['Float']>;
-  maxAbsError?: Maybe<Scalars['Float']>;
-  meanSquareError?: Maybe<Scalars['Float']>;
-  rootMeanSquareError?: Maybe<Scalars['Float']>;
-  r2?: Maybe<Scalars['Float']>;
-  pValue?: Maybe<Scalars['Float']>;
-  spearmanCorr?: Maybe<Scalars['Float']>;
-  pearsonCorr?: Maybe<Scalars['Float']>;
-  supplementary?: Maybe<Scalars['Json']>;
-};
-
-export type RegressionMetricCreateOrConnectWithoutModelInput = {
-  where: RegressionMetricWhereUniqueInput;
-  create: RegressionMetricCreateWithoutModelInput;
-};
-
-export type RegressionMetricWhereUniqueInput = {
-  id?: Maybe<Scalars['Int']>;
-};
-
-export type DescriptorUpdateOneWithoutModelsInput = {
-  create?: Maybe<DescriptorCreateWithoutModelsInput>;
-  connectOrCreate?: Maybe<DescriptorCreateOrConnectWithoutModelsInput>;
-  upsert?: Maybe<DescriptorUpsertWithoutModelsInput>;
-  connect?: Maybe<DescriptorWhereUniqueInput>;
-  disconnect?: Maybe<Scalars['Boolean']>;
-  delete?: Maybe<Scalars['Boolean']>;
-  update?: Maybe<DescriptorUpdateWithoutModelsInput>;
-};
-
-export type MethodUpdateOneWithoutModelsInput = {
-  create?: Maybe<MethodCreateWithoutModelsInput>;
-  connectOrCreate?: Maybe<MethodCreateOrConnectWithoutModelsInput>;
-  upsert?: Maybe<MethodUpsertWithoutModelsInput>;
-  connect?: Maybe<MethodWhereUniqueInput>;
-  disconnect?: Maybe<Scalars['Boolean']>;
-  delete?: Maybe<Scalars['Boolean']>;
-  update?: Maybe<MethodUpdateWithoutModelsInput>;
-};
-
-export type PropertyUpdateOneWithoutModelsInput = {
-  create?: Maybe<PropertyCreateWithoutModelsInput>;
-  connectOrCreate?: Maybe<PropertyCreateOrConnectWithoutModelsInput>;
-  upsert?: Maybe<PropertyUpsertWithoutModelsInput>;
-  connect?: Maybe<PropertyWhereUniqueInput>;
-  disconnect?: Maybe<Scalars['Boolean']>;
-  delete?: Maybe<Scalars['Boolean']>;
-  update?: Maybe<PropertyUpdateWithoutModelsInput>;
-};
-
-export type ModelsetUpdateOneWithoutModelsInput = {
-  create?: Maybe<ModelsetCreateWithoutModelsInput>;
-  connectOrCreate?: Maybe<ModelsetCreateOrConnectWithoutModelsInput>;
-  upsert?: Maybe<ModelsetUpsertWithoutModelsInput>;
-  connect?: Maybe<ModelsetWhereUniqueInput>;
-  disconnect?: Maybe<Scalars['Boolean']>;
-  delete?: Maybe<Scalars['Boolean']>;
-  update?: Maybe<ModelsetUpdateWithoutModelsInput>;
-};
-
-export type ClassificationMetricUpdateOneWithoutModelInput = {
-  create?: Maybe<ClassificationMetricCreateWithoutModelInput>;
-  connectOrCreate?: Maybe<ClassificationMetricCreateOrConnectWithoutModelInput>;
-  upsert?: Maybe<ClassificationMetricUpsertWithoutModelInput>;
-  connect?: Maybe<ClassificationMetricWhereUniqueInput>;
-  disconnect?: Maybe<Scalars['Boolean']>;
-  delete?: Maybe<Scalars['Boolean']>;
-  update?: Maybe<ClassificationMetricUpdateWithoutModelInput>;
-};
-
-export type RegressionMetricUpdateOneWithoutModelInput = {
-  create?: Maybe<RegressionMetricCreateWithoutModelInput>;
-  connectOrCreate?: Maybe<RegressionMetricCreateOrConnectWithoutModelInput>;
-  upsert?: Maybe<RegressionMetricUpsertWithoutModelInput>;
-  connect?: Maybe<RegressionMetricWhereUniqueInput>;
-  disconnect?: Maybe<Scalars['Boolean']>;
-  delete?: Maybe<Scalars['Boolean']>;
-  update?: Maybe<RegressionMetricUpdateWithoutModelInput>;
-};
-
 export type ModelsetUpdateWithoutOrganizationInput = {
   name?: Maybe<StringFieldUpdateOperationsInput>;
   description?: Maybe<NullableStringFieldUpdateOperationsInput>;
+  version?: Maybe<NullableStringFieldUpdateOperationsInput>;
   keywords?: Maybe<NullableStringFieldUpdateOperationsInput>;
   private?: Maybe<BoolFieldUpdateOperationsInput>;
-  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
   deprecated?: Maybe<BoolFieldUpdateOperationsInput>;
   artifacts?: Maybe<ArtifactUpdateManyWithoutModelsetInput>;
   contributors?: Maybe<UserUpdateManyWithoutContributedModelSetsInput>;
   properties?: Maybe<PropertyUpdateManyWithoutModelsetsInput>;
-};
-
-export type DescriptorUpsertWithoutModelsInput = {
-  update: DescriptorUpdateWithoutModelsInput;
-  create: DescriptorCreateWithoutModelsInput;
-};
-
-export type DescriptorUpdateWithoutModelsInput = {
-  name?: Maybe<StringFieldUpdateOperationsInput>;
-  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
-};
-
-export type MethodUpsertWithoutModelsInput = {
-  update: MethodUpdateWithoutModelsInput;
-  create: MethodCreateWithoutModelsInput;
-};
-
-export type MethodUpdateWithoutModelsInput = {
-  name?: Maybe<StringFieldUpdateOperationsInput>;
-  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
-};
-
-export type PropertyUpsertWithoutModelsInput = {
-  update: PropertyUpdateWithoutModelsInput;
-  create: PropertyCreateWithoutModelsInput;
-};
-
-export type PropertyUpdateWithoutModelsInput = {
-  name?: Maybe<StringFieldUpdateOperationsInput>;
-  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
-  symbol?: Maybe<NullableStringFieldUpdateOperationsInput>;
-  unit?: Maybe<NullableStringFieldUpdateOperationsInput>;
-  modelsets?: Maybe<ModelsetUpdateManyWithoutPropertiesInput>;
-};
-
-export type ModelsetUpsertWithoutModelsInput = {
-  update: ModelsetUpdateWithoutModelsInput;
-  create: ModelsetCreateWithoutModelsInput;
-};
-
-export type ModelsetUpdateWithoutModelsInput = {
-  name?: Maybe<StringFieldUpdateOperationsInput>;
-  description?: Maybe<NullableStringFieldUpdateOperationsInput>;
-  keywords?: Maybe<NullableStringFieldUpdateOperationsInput>;
-  private?: Maybe<BoolFieldUpdateOperationsInput>;
-  sampleCode?: Maybe<NullableStringFieldUpdateOperationsInput>;
-  deprecated?: Maybe<BoolFieldUpdateOperationsInput>;
-  organization?: Maybe<OrganizationUpdateOneWithoutModelsetsInput>;
-  artifacts?: Maybe<ArtifactUpdateManyWithoutModelsetInput>;
-  contributors?: Maybe<UserUpdateManyWithoutContributedModelSetsInput>;
-  properties?: Maybe<PropertyUpdateManyWithoutModelsetsInput>;
-};
-
-export type ClassificationMetricUpsertWithoutModelInput = {
-  update: ClassificationMetricUpdateWithoutModelInput;
-  create: ClassificationMetricCreateWithoutModelInput;
-};
-
-export type ClassificationMetricUpdateWithoutModelInput = {
-  accuracy?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  precision?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  recall?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  f1?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  sensitivity?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  prevalence?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  specificity?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  ppv?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  npv?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  supplementary?: Maybe<Scalars['Json']>;
-};
-
-export type RegressionMetricUpsertWithoutModelInput = {
-  update: RegressionMetricUpdateWithoutModelInput;
-  create: RegressionMetricCreateWithoutModelInput;
-};
-
-export type RegressionMetricUpdateWithoutModelInput = {
-  meanAbsError?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  maxAbsError?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  meanSquareError?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  rootMeanSquareError?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  r2?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  pValue?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  spearmanCorr?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  pearsonCorr?: Maybe<NullableFloatFieldUpdateOperationsInput>;
-  supplementary?: Maybe<Scalars['Json']>;
-};
-
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: Maybe<Scalars['Float']>;
-  increment?: Maybe<Scalars['Float']>;
-  decrement?: Maybe<Scalars['Float']>;
-  multiply?: Maybe<Scalars['Float']>;
-  divide?: Maybe<Scalars['Float']>;
 };
 
 export type Mutation = {
@@ -2799,6 +2880,7 @@ export type Mutation = {
   updateOneMethod?: Maybe<Method>;
   deleteOneMethod?: Maybe<Method>;
   deleteManyModel: AffectedRowsOutput;
+  updateOneModel?: Maybe<Model>;
   updateManyModel: AffectedRowsOutput;
   /** Upload a model to MDL server */
   uploadModel: Model;
@@ -2854,6 +2936,12 @@ export type MutationDeleteOneMethodArgs = {
 
 export type MutationDeleteManyModelArgs = {
   where?: Maybe<ModelWhereInput>;
+};
+
+
+export type MutationUpdateOneModelArgs = {
+  data: ModelUpdateInput;
+  where: ModelWhereUniqueInput;
 };
 
 
