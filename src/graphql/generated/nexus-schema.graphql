@@ -16,67 +16,22 @@ type Artifact {
   path: String!
 }
 
-input ArtifactCreateManyModelsetInput {
-  etag: String!
-  filename: String!
-  id: Int
-  organizationId: Int
-  ownerId: Int!
-  path: String!
-}
-
-input ArtifactCreateManyModelsetInputEnvelope {
-  data: [ArtifactCreateManyModelsetInput!]
-  skipDuplicates: Boolean
-}
-
-input ArtifactCreateManyOrganizationInput {
-  etag: String!
-  filename: String!
-  id: Int
-  ownerId: Int!
-  path: String!
-  setId: Int
-}
-
-input ArtifactCreateManyOrganizationInputEnvelope {
-  data: [ArtifactCreateManyOrganizationInput!]
-  skipDuplicates: Boolean
-}
-
-input ArtifactCreateManyOwnerInput {
-  etag: String!
-  filename: String!
-  id: Int
-  organizationId: Int
-  path: String!
-  setId: Int
-}
-
-input ArtifactCreateManyOwnerInputEnvelope {
-  data: [ArtifactCreateManyOwnerInput!]
-  skipDuplicates: Boolean
-}
-
 input ArtifactCreateNestedManyWithoutModelsetInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutModelsetInput!]
   create: [ArtifactCreateWithoutModelsetInput!]
-  createMany: ArtifactCreateManyModelsetInputEnvelope
 }
 
 input ArtifactCreateNestedManyWithoutOrganizationInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutOrganizationInput!]
   create: [ArtifactCreateWithoutOrganizationInput!]
-  createMany: ArtifactCreateManyOrganizationInputEnvelope
 }
 
 input ArtifactCreateNestedManyWithoutOwnerInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutOwnerInput!]
   create: [ArtifactCreateWithoutOwnerInput!]
-  createMany: ArtifactCreateManyOwnerInputEnvelope
 }
 
 input ArtifactCreateOrConnectWithoutModelsetInput {
@@ -175,7 +130,6 @@ input ArtifactUpdateManyWithoutModelsetInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutModelsetInput!]
   create: [ArtifactCreateWithoutModelsetInput!]
-  createMany: ArtifactCreateManyModelsetInputEnvelope
   delete: [ArtifactWhereUniqueInput!]
   deleteMany: [ArtifactScalarWhereInput!]
   disconnect: [ArtifactWhereUniqueInput!]
@@ -189,7 +143,6 @@ input ArtifactUpdateManyWithoutOrganizationInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutOrganizationInput!]
   create: [ArtifactCreateWithoutOrganizationInput!]
-  createMany: ArtifactCreateManyOrganizationInputEnvelope
   delete: [ArtifactWhereUniqueInput!]
   deleteMany: [ArtifactScalarWhereInput!]
   disconnect: [ArtifactWhereUniqueInput!]
@@ -203,7 +156,6 @@ input ArtifactUpdateManyWithoutOwnerInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutOwnerInput!]
   create: [ArtifactCreateWithoutOwnerInput!]
-  createMany: ArtifactCreateManyOwnerInputEnvelope
   delete: [ArtifactWhereUniqueInput!]
   deleteMany: [ArtifactScalarWhereInput!]
   disconnect: [ArtifactWhereUniqueInput!]
@@ -470,22 +422,10 @@ input DescriptorCreateInput {
   name: String!
 }
 
-input DescriptorCreateManyOwnerInput {
-  description: String
-  id: Int
-  name: String!
-}
-
-input DescriptorCreateManyOwnerInputEnvelope {
-  data: [DescriptorCreateManyOwnerInput!]
-  skipDuplicates: Boolean
-}
-
 input DescriptorCreateNestedManyWithoutOwnerInput {
   connect: [DescriptorWhereUniqueInput!]
   connectOrCreate: [DescriptorCreateOrConnectWithoutOwnerInput!]
   create: [DescriptorCreateWithoutOwnerInput!]
-  createMany: DescriptorCreateManyOwnerInputEnvelope
 }
 
 input DescriptorCreateNestedOneWithoutModelsInput {
@@ -569,7 +509,6 @@ input DescriptorUpdateManyWithoutOwnerInput {
   connect: [DescriptorWhereUniqueInput!]
   connectOrCreate: [DescriptorCreateOrConnectWithoutOwnerInput!]
   create: [DescriptorCreateWithoutOwnerInput!]
-  createMany: DescriptorCreateManyOwnerInputEnvelope
   delete: [DescriptorWhereUniqueInput!]
   deleteMany: [DescriptorScalarWhereInput!]
   disconnect: [DescriptorWhereUniqueInput!]
@@ -702,22 +641,10 @@ input MethodCreateInput {
   name: String!
 }
 
-input MethodCreateManyOwnerInput {
-  description: String
-  id: Int
-  name: String!
-}
-
-input MethodCreateManyOwnerInputEnvelope {
-  data: [MethodCreateManyOwnerInput!]
-  skipDuplicates: Boolean
-}
-
 input MethodCreateNestedManyWithoutOwnerInput {
   connect: [MethodWhereUniqueInput!]
   connectOrCreate: [MethodCreateOrConnectWithoutOwnerInput!]
   create: [MethodCreateWithoutOwnerInput!]
-  createMany: MethodCreateManyOwnerInputEnvelope
 }
 
 input MethodCreateNestedOneWithoutModelsInput {
@@ -801,7 +728,6 @@ input MethodUpdateManyWithoutOwnerInput {
   connect: [MethodWhereUniqueInput!]
   connectOrCreate: [MethodCreateOrConnectWithoutOwnerInput!]
   create: [MethodCreateWithoutOwnerInput!]
-  createMany: MethodCreateManyOwnerInputEnvelope
   delete: [MethodWhereUniqueInput!]
   deleteMany: [MethodScalarWhereInput!]
   disconnect: [MethodWhereUniqueInput!]
@@ -1054,38 +980,6 @@ input ModelsetCreateInput {
   sampleCode: String
 }
 
-input ModelsetCreateManyOrganizationInput {
-  deprecated: Boolean
-  description: String
-  id: Int
-  keywords: String
-  name: String!
-  ownerId: Int
-  private: Boolean
-  sampleCode: String
-}
-
-input ModelsetCreateManyOrganizationInputEnvelope {
-  data: [ModelsetCreateManyOrganizationInput!]
-  skipDuplicates: Boolean
-}
-
-input ModelsetCreateManyOwnerInput {
-  deprecated: Boolean
-  description: String
-  id: Int
-  keywords: String
-  name: String!
-  organizationId: Int
-  private: Boolean
-  sampleCode: String
-}
-
-input ModelsetCreateManyOwnerInputEnvelope {
-  data: [ModelsetCreateManyOwnerInput!]
-  skipDuplicates: Boolean
-}
-
 input ModelsetCreateNestedManyWithoutContributorsInput {
   connect: [ModelsetWhereUniqueInput!]
   connectOrCreate: [ModelsetCreateOrConnectWithoutContributorsInput!]
@@ -1096,14 +990,12 @@ input ModelsetCreateNestedManyWithoutOrganizationInput {
   connect: [ModelsetWhereUniqueInput!]
   connectOrCreate: [ModelsetCreateOrConnectWithoutOrganizationInput!]
   create: [ModelsetCreateWithoutOrganizationInput!]
-  createMany: ModelsetCreateManyOrganizationInputEnvelope
 }
 
 input ModelsetCreateNestedManyWithoutOwnerInput {
   connect: [ModelsetWhereUniqueInput!]
   connectOrCreate: [ModelsetCreateOrConnectWithoutOwnerInput!]
   create: [ModelsetCreateWithoutOwnerInput!]
-  createMany: ModelsetCreateManyOwnerInputEnvelope
 }
 
 input ModelsetCreateNestedManyWithoutPropertiesInput {
@@ -1334,7 +1226,6 @@ input ModelsetUpdateManyWithoutOrganizationInput {
   connect: [ModelsetWhereUniqueInput!]
   connectOrCreate: [ModelsetCreateOrConnectWithoutOrganizationInput!]
   create: [ModelsetCreateWithoutOrganizationInput!]
-  createMany: ModelsetCreateManyOrganizationInputEnvelope
   delete: [ModelsetWhereUniqueInput!]
   deleteMany: [ModelsetScalarWhereInput!]
   disconnect: [ModelsetWhereUniqueInput!]
@@ -1348,7 +1239,6 @@ input ModelsetUpdateManyWithoutOwnerInput {
   connect: [ModelsetWhereUniqueInput!]
   connectOrCreate: [ModelsetCreateOrConnectWithoutOwnerInput!]
   create: [ModelsetCreateWithoutOwnerInput!]
-  createMany: ModelsetCreateManyOwnerInputEnvelope
   delete: [ModelsetWhereUniqueInput!]
   deleteMany: [ModelsetScalarWhereInput!]
   disconnect: [ModelsetWhereUniqueInput!]
@@ -1700,17 +1590,6 @@ type Organization {
   owner: User
 }
 
-input OrganizationCreateManyOwnerInput {
-  description: String
-  id: Int
-  name: String!
-}
-
-input OrganizationCreateManyOwnerInputEnvelope {
-  data: [OrganizationCreateManyOwnerInput!]
-  skipDuplicates: Boolean
-}
-
 input OrganizationCreateNestedManyWithoutMembersInput {
   connect: [OrganizationWhereUniqueInput!]
   connectOrCreate: [OrganizationCreateOrConnectWithoutMembersInput!]
@@ -1721,7 +1600,6 @@ input OrganizationCreateNestedManyWithoutOwnerInput {
   connect: [OrganizationWhereUniqueInput!]
   connectOrCreate: [OrganizationCreateOrConnectWithoutOwnerInput!]
   create: [OrganizationCreateWithoutOwnerInput!]
-  createMany: OrganizationCreateManyOwnerInputEnvelope
 }
 
 input OrganizationCreateNestedOneWithoutArtifactsInput {
@@ -1840,7 +1718,6 @@ input OrganizationUpdateManyWithoutOwnerInput {
   connect: [OrganizationWhereUniqueInput!]
   connectOrCreate: [OrganizationCreateOrConnectWithoutOwnerInput!]
   create: [OrganizationCreateWithoutOwnerInput!]
-  createMany: OrganizationCreateManyOwnerInputEnvelope
   delete: [OrganizationWhereUniqueInput!]
   deleteMany: [OrganizationScalarWhereInput!]
   disconnect: [OrganizationWhereUniqueInput!]
@@ -1970,19 +1847,6 @@ input PropertyCreateInput {
   unit: String
 }
 
-input PropertyCreateManyOwnerInput {
-  description: String
-  id: Int
-  name: String!
-  symbol: String
-  unit: String
-}
-
-input PropertyCreateManyOwnerInputEnvelope {
-  data: [PropertyCreateManyOwnerInput!]
-  skipDuplicates: Boolean
-}
-
 input PropertyCreateNestedManyWithoutModelsetsInput {
   connect: [PropertyWhereUniqueInput!]
   connectOrCreate: [PropertyCreateOrConnectWithoutModelsetsInput!]
@@ -1993,7 +1857,6 @@ input PropertyCreateNestedManyWithoutOwnerInput {
   connect: [PropertyWhereUniqueInput!]
   connectOrCreate: [PropertyCreateOrConnectWithoutOwnerInput!]
   create: [PropertyCreateWithoutOwnerInput!]
-  createMany: PropertyCreateManyOwnerInputEnvelope
 }
 
 input PropertyCreateNestedOneWithoutModelsInput {
@@ -2122,7 +1985,6 @@ input PropertyUpdateManyWithoutOwnerInput {
   connect: [PropertyWhereUniqueInput!]
   connectOrCreate: [PropertyCreateOrConnectWithoutOwnerInput!]
   create: [PropertyCreateWithoutOwnerInput!]
-  createMany: PropertyCreateManyOwnerInputEnvelope
   delete: [PropertyWhereUniqueInput!]
   deleteMany: [PropertyScalarWhereInput!]
   disconnect: [PropertyWhereUniqueInput!]
