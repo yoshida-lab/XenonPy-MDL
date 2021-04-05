@@ -1,9 +1,9 @@
-FROM node:current-alpine AS base
+FROM node:alpine AS base
 WORKDIR /base
 COPY package*.json ./
 RUN yarn install
 COPY . .
-RUN ls -l && yarn gen:prisma
+RUN yarn gen:prisma
 
 FROM base AS build
 ENV NODE_ENV=production
@@ -11,7 +11,7 @@ WORKDIR /build
 COPY --from=base /base ./
 RUN yarn build
 
-FROM node:current-alpine AS production
+FROM node:alpine AS production
 ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=build /build/package*.json ./
