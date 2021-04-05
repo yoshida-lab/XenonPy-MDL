@@ -449,6 +449,8 @@ type Descriptor {
   models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [DescriptorModelsOrderByInput!], where: ModelWhereInput): [Model!]!
   name: String!
   owner: User
+  sampleCode: String
+  version: String
 }
 
 input DescriptorCreateInput {
@@ -1057,6 +1059,7 @@ type Modelset {
   organization: Organization
   owner: User
   private: Boolean!
+  version: String
 }
 
 input ModelsetCreateInput {

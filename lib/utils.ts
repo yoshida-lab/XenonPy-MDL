@@ -54,11 +54,29 @@ export function signedSelf<T extends string, F extends string>(
     }
 
     // pass owner
-    const checker = await userMatcher({
-      distinct: ['ownerId'],
+    const query = {
       where: { ...removeNulls(args.where) },
       select: { ownerId: true }
-    })
+    }
+    console.log(userMatcher)
+
+    if (userMatcher.name !== 'findUnique') {
+      Object.assign(query, { distinct: ['ownerId'] })
+    }
+
+    let checker
+    try {
+      checker = await userMatcher({
+        distinct: ['ownerId'],
+        where: { ...removeNulls(args.where) },
+        select: { ownerId: true }
+      })
+    } catch {
+      checker = await userMatcher({
+        where: { ...removeNulls(args.where) },
+        select: { ownerId: true }
+      })
+    }
 
     if (checker === null) {
       // accept null operations
