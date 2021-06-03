@@ -16,22 +16,67 @@ type Artifact {
   path: String!
 }
 
+input ArtifactCreateManyModelsetInput {
+  etag: String!
+  filename: String!
+  id: Int
+  organizationId: Int
+  ownerId: Int!
+  path: String!
+}
+
+input ArtifactCreateManyModelsetInputEnvelope {
+  data: [ArtifactCreateManyModelsetInput!]
+  skipDuplicates: Boolean
+}
+
+input ArtifactCreateManyOrganizationInput {
+  etag: String!
+  filename: String!
+  id: Int
+  ownerId: Int!
+  path: String!
+  setId: Int
+}
+
+input ArtifactCreateManyOrganizationInputEnvelope {
+  data: [ArtifactCreateManyOrganizationInput!]
+  skipDuplicates: Boolean
+}
+
+input ArtifactCreateManyOwnerInput {
+  etag: String!
+  filename: String!
+  id: Int
+  organizationId: Int
+  path: String!
+  setId: Int
+}
+
+input ArtifactCreateManyOwnerInputEnvelope {
+  data: [ArtifactCreateManyOwnerInput!]
+  skipDuplicates: Boolean
+}
+
 input ArtifactCreateNestedManyWithoutModelsetInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutModelsetInput!]
   create: [ArtifactCreateWithoutModelsetInput!]
+  createMany: ArtifactCreateManyModelsetInputEnvelope
 }
 
 input ArtifactCreateNestedManyWithoutOrganizationInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutOrganizationInput!]
   create: [ArtifactCreateWithoutOrganizationInput!]
+  createMany: ArtifactCreateManyOrganizationInputEnvelope
 }
 
 input ArtifactCreateNestedManyWithoutOwnerInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutOwnerInput!]
   create: [ArtifactCreateWithoutOwnerInput!]
+  createMany: ArtifactCreateManyOwnerInputEnvelope
 }
 
 input ArtifactCreateOrConnectWithoutModelInput {
@@ -93,12 +138,18 @@ input ArtifactListRelationFilter {
   some: ArtifactWhereInput
 }
 
-input ArtifactOrderByInput {
+input ArtifactOrderByRelationAggregateInput {
+  _count: SortOrder
+  count: SortOrder
+}
+
+input ArtifactOrderByWithRelationInput {
   etag: SortOrder
   filename: SortOrder
   id: SortOrder
-  modelset: ModelsetOrderByInput
-  organization: OrganizationOrderByInput
+  model: ModelOrderByWithRelationInput
+  modelset: ModelsetOrderByWithRelationInput
+  organization: OrganizationOrderByWithRelationInput
   organizationId: SortOrder
   ownerId: SortOrder
   path: SortOrder
@@ -143,6 +194,7 @@ input ArtifactUpdateManyWithoutModelsetInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutModelsetInput!]
   create: [ArtifactCreateWithoutModelsetInput!]
+  createMany: ArtifactCreateManyModelsetInputEnvelope
   delete: [ArtifactWhereUniqueInput!]
   deleteMany: [ArtifactScalarWhereInput!]
   disconnect: [ArtifactWhereUniqueInput!]
@@ -156,6 +208,7 @@ input ArtifactUpdateManyWithoutOrganizationInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutOrganizationInput!]
   create: [ArtifactCreateWithoutOrganizationInput!]
+  createMany: ArtifactCreateManyOrganizationInputEnvelope
   delete: [ArtifactWhereUniqueInput!]
   deleteMany: [ArtifactScalarWhereInput!]
   disconnect: [ArtifactWhereUniqueInput!]
@@ -169,6 +222,7 @@ input ArtifactUpdateManyWithoutOwnerInput {
   connect: [ArtifactWhereUniqueInput!]
   connectOrCreate: [ArtifactCreateOrConnectWithoutOwnerInput!]
   create: [ArtifactCreateWithoutOwnerInput!]
+  createMany: ArtifactCreateManyOwnerInputEnvelope
   delete: [ArtifactWhereUniqueInput!]
   deleteMany: [ArtifactScalarWhereInput!]
   disconnect: [ArtifactWhereUniqueInput!]
@@ -337,10 +391,11 @@ input ClassificationMetricCreateWithoutModelInput {
   supplementary: Json
 }
 
-input ClassificationMetricOrderByInput {
+input ClassificationMetricOrderByWithRelationInput {
   accuracy: SortOrder
   f1: SortOrder
   id: SortOrder
+  model: ModelOrderByWithRelationInput
   npv: SortOrder
   ppv: SortOrder
   precision: SortOrder
@@ -460,10 +515,24 @@ input DescriptorCreateInput {
   version: String
 }
 
+input DescriptorCreateManyOwnerInput {
+  description: String
+  id: Int
+  name: String!
+  sampleCode: String
+  version: String
+}
+
+input DescriptorCreateManyOwnerInputEnvelope {
+  data: [DescriptorCreateManyOwnerInput!]
+  skipDuplicates: Boolean
+}
+
 input DescriptorCreateNestedManyWithoutOwnerInput {
   connect: [DescriptorWhereUniqueInput!]
   connectOrCreate: [DescriptorCreateOrConnectWithoutOwnerInput!]
   create: [DescriptorCreateWithoutOwnerInput!]
+  createMany: DescriptorCreateManyOwnerInputEnvelope
 }
 
 input DescriptorCreateNestedOneWithoutModelsInput {
@@ -503,19 +572,19 @@ input DescriptorListRelationFilter {
 }
 
 input DescriptorModelsOrderByInput {
-  clsMetric: ClassificationMetricOrderByInput
+  clsMetric: ClassificationMetricOrderByWithRelationInput
   createdAt: SortOrder
-  descriptor: DescriptorOrderByInput
+  descriptor: DescriptorOrderByWithRelationInput
   id: SortOrder
   keywords: SortOrder
-  method: MethodOrderByInput
-  modelset: ModelsetOrderByInput
-  property: PropertyOrderByInput
-  regMetric: RegressionMetricOrderByInput
+  method: MethodOrderByWithRelationInput
+  modelset: ModelsetOrderByWithRelationInput
+  property: PropertyOrderByWithRelationInput
+  regMetric: RegressionMetricOrderByWithRelationInput
   updatedAt: SortOrder
 }
 
-input DescriptorOrderByInput {
+input DescriptorOrderByWithRelationInput {
   description: SortOrder
   id: SortOrder
   name: SortOrder
@@ -559,6 +628,7 @@ input DescriptorUpdateManyWithoutOwnerInput {
   connect: [DescriptorWhereUniqueInput!]
   connectOrCreate: [DescriptorCreateOrConnectWithoutOwnerInput!]
   create: [DescriptorCreateWithoutOwnerInput!]
+  createMany: DescriptorCreateManyOwnerInputEnvelope
   delete: [DescriptorWhereUniqueInput!]
   deleteMany: [DescriptorScalarWhereInput!]
   disconnect: [DescriptorWhereUniqueInput!]
@@ -672,7 +742,7 @@ input IntNullableFilter {
 """
 The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
-scalar JSONObject
+scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 scalar Json
 
@@ -698,10 +768,23 @@ input MethodCreateInput {
   version: String
 }
 
+input MethodCreateManyOwnerInput {
+  description: String
+  id: Int
+  name: String!
+  version: String
+}
+
+input MethodCreateManyOwnerInputEnvelope {
+  data: [MethodCreateManyOwnerInput!]
+  skipDuplicates: Boolean
+}
+
 input MethodCreateNestedManyWithoutOwnerInput {
   connect: [MethodWhereUniqueInput!]
   connectOrCreate: [MethodCreateOrConnectWithoutOwnerInput!]
   create: [MethodCreateWithoutOwnerInput!]
+  createMany: MethodCreateManyOwnerInputEnvelope
 }
 
 input MethodCreateNestedOneWithoutModelsInput {
@@ -739,19 +822,19 @@ input MethodListRelationFilter {
 }
 
 input MethodModelsOrderByInput {
-  clsMetric: ClassificationMetricOrderByInput
+  clsMetric: ClassificationMetricOrderByWithRelationInput
   createdAt: SortOrder
-  descriptor: DescriptorOrderByInput
+  descriptor: DescriptorOrderByWithRelationInput
   id: SortOrder
   keywords: SortOrder
-  method: MethodOrderByInput
-  modelset: ModelsetOrderByInput
-  property: PropertyOrderByInput
-  regMetric: RegressionMetricOrderByInput
+  method: MethodOrderByWithRelationInput
+  modelset: ModelsetOrderByWithRelationInput
+  property: PropertyOrderByWithRelationInput
+  regMetric: RegressionMetricOrderByWithRelationInput
   updatedAt: SortOrder
 }
 
-input MethodOrderByInput {
+input MethodOrderByWithRelationInput {
   description: SortOrder
   id: SortOrder
   name: SortOrder
@@ -791,6 +874,7 @@ input MethodUpdateManyWithoutOwnerInput {
   connect: [MethodWhereUniqueInput!]
   connectOrCreate: [MethodCreateOrConnectWithoutOwnerInput!]
   create: [MethodCreateWithoutOwnerInput!]
+  createMany: MethodCreateManyOwnerInputEnvelope
   delete: [MethodWhereUniqueInput!]
   deleteMany: [MethodScalarWhereInput!]
   disconnect: [MethodWhereUniqueInput!]
@@ -913,25 +997,25 @@ input ModelCreateWithoutArtifactInput {
   updatedAt: DateTime
 }
 
-input ModelOrderByInput {
-  artifact: ArtifactOrderByInput
+input ModelOrderByWithRelationInput {
+  artifact: ArtifactOrderByWithRelationInput
   artifactId: SortOrder
-  clsMetric: ClassificationMetricOrderByInput
+  clsMetric: ClassificationMetricOrderByWithRelationInput
   clsMetricId: SortOrder
   createdAt: SortOrder
   deprecated: SortOrder
-  descriptor: DescriptorOrderByInput
+  descriptor: DescriptorOrderByWithRelationInput
   descriptorId: SortOrder
   downloads: SortOrder
   id: SortOrder
   keywords: SortOrder
-  method: MethodOrderByInput
+  method: MethodOrderByWithRelationInput
   methodId: SortOrder
-  modelset: ModelsetOrderByInput
+  modelset: ModelsetOrderByWithRelationInput
   ownerId: SortOrder
-  property: PropertyOrderByInput
+  property: PropertyOrderByWithRelationInput
   propertyId: SortOrder
-  regMetric: RegressionMetricOrderByInput
+  regMetric: RegressionMetricOrderByWithRelationInput
   regMetricId: SortOrder
   setId: SortOrder
   succeed: SortOrder
@@ -1075,6 +1159,38 @@ input ModelsetCreateInput {
   version: String
 }
 
+input ModelsetCreateManyOrganizationInput {
+  deprecated: Boolean
+  description: String
+  id: Int
+  keywords: String
+  name: String!
+  ownerId: Int
+  private: Boolean
+  version: String
+}
+
+input ModelsetCreateManyOrganizationInputEnvelope {
+  data: [ModelsetCreateManyOrganizationInput!]
+  skipDuplicates: Boolean
+}
+
+input ModelsetCreateManyOwnerInput {
+  deprecated: Boolean
+  description: String
+  id: Int
+  keywords: String
+  name: String!
+  organizationId: Int
+  private: Boolean
+  version: String
+}
+
+input ModelsetCreateManyOwnerInputEnvelope {
+  data: [ModelsetCreateManyOwnerInput!]
+  skipDuplicates: Boolean
+}
+
 input ModelsetCreateNestedManyWithoutContributorsInput {
   connect: [ModelsetWhereUniqueInput!]
   connectOrCreate: [ModelsetCreateOrConnectWithoutContributorsInput!]
@@ -1085,12 +1201,14 @@ input ModelsetCreateNestedManyWithoutOrganizationInput {
   connect: [ModelsetWhereUniqueInput!]
   connectOrCreate: [ModelsetCreateOrConnectWithoutOrganizationInput!]
   create: [ModelsetCreateWithoutOrganizationInput!]
+  createMany: ModelsetCreateManyOrganizationInputEnvelope
 }
 
 input ModelsetCreateNestedManyWithoutOwnerInput {
   connect: [ModelsetWhereUniqueInput!]
   connectOrCreate: [ModelsetCreateOrConnectWithoutOwnerInput!]
   create: [ModelsetCreateWithoutOwnerInput!]
+  createMany: ModelsetCreateManyOwnerInputEnvelope
 }
 
 input ModelsetCreateNestedManyWithoutPropertiesInput {
@@ -1222,28 +1340,36 @@ input ModelsetListRelationFilter {
 }
 
 input ModelsetModelsOrderByInput {
-  clsMetric: ClassificationMetricOrderByInput
+  clsMetric: ClassificationMetricOrderByWithRelationInput
   createdAt: SortOrder
-  descriptor: DescriptorOrderByInput
+  descriptor: DescriptorOrderByWithRelationInput
   id: SortOrder
   keywords: SortOrder
-  method: MethodOrderByInput
-  modelset: ModelsetOrderByInput
-  property: PropertyOrderByInput
-  regMetric: RegressionMetricOrderByInput
+  method: MethodOrderByWithRelationInput
+  modelset: ModelsetOrderByWithRelationInput
+  property: PropertyOrderByWithRelationInput
+  regMetric: RegressionMetricOrderByWithRelationInput
   updatedAt: SortOrder
 }
 
-input ModelsetOrderByInput {
+input ModelsetOrderByRelationAggregateInput {
+  _count: SortOrder
+  count: SortOrder
+}
+
+input ModelsetOrderByWithRelationInput {
+  artifacts: ArtifactOrderByRelationAggregateInput
+  contributors: UserOrderByRelationAggregateInput
   deprecated: SortOrder
   description: SortOrder
   id: SortOrder
   keywords: SortOrder
   name: SortOrder
-  organization: OrganizationOrderByInput
+  organization: OrganizationOrderByWithRelationInput
   organizationId: SortOrder
   ownerId: SortOrder
   private: SortOrder
+  properties: PropertyOrderByRelationAggregateInput
   version: SortOrder
 }
 
@@ -1321,6 +1447,7 @@ input ModelsetUpdateManyWithoutOrganizationInput {
   connect: [ModelsetWhereUniqueInput!]
   connectOrCreate: [ModelsetCreateOrConnectWithoutOrganizationInput!]
   create: [ModelsetCreateWithoutOrganizationInput!]
+  createMany: ModelsetCreateManyOrganizationInputEnvelope
   delete: [ModelsetWhereUniqueInput!]
   deleteMany: [ModelsetScalarWhereInput!]
   disconnect: [ModelsetWhereUniqueInput!]
@@ -1334,6 +1461,7 @@ input ModelsetUpdateManyWithoutOwnerInput {
   connect: [ModelsetWhereUniqueInput!]
   connectOrCreate: [ModelsetCreateOrConnectWithoutOwnerInput!]
   create: [ModelsetCreateWithoutOwnerInput!]
+  createMany: ModelsetCreateManyOwnerInputEnvelope
   delete: [ModelsetWhereUniqueInput!]
   deleteMany: [ModelsetScalarWhereInput!]
   disconnect: [ModelsetWhereUniqueInput!]
@@ -1558,6 +1686,15 @@ type Mutation {
   uploadModel(artifact: Upload!, clsMetric: ClassificationMetricCreateWithModel, deprecated: Boolean, descriptor: DescriptorCreateOrConnectWithoutOwnerInput, keywords: String, method: MethodCreateOrConnectWithoutOwnerInput, modelset: ModelsetCreateOrConnectWithoutOwnerInput, property: PropertyCreateOrConnectWithoutOwnerInput, regMetric: RegressionMetricCreateWithModel, succeed: Boolean, training_env: Json, training_info: Json): Model!
 }
 
+"""
+
+    This scalar should never make it into production. It is used as a placeholder for situations
+    where GraphQL Nexus encounters a missing type. We don't want to error immediately, otherwise
+    the TypeScript definitions will not be updated.
+  
+"""
+scalar NEXUS__UNKNOWN__TYPE
+
 input NestedBoolFilter {
   equals: Boolean
   not: NestedBoolFilter
@@ -1687,6 +1824,17 @@ type Organization {
   owner: User
 }
 
+input OrganizationCreateManyOwnerInput {
+  description: String
+  id: Int
+  name: String!
+}
+
+input OrganizationCreateManyOwnerInputEnvelope {
+  data: [OrganizationCreateManyOwnerInput!]
+  skipDuplicates: Boolean
+}
+
 input OrganizationCreateNestedManyWithoutMembersInput {
   connect: [OrganizationWhereUniqueInput!]
   connectOrCreate: [OrganizationCreateOrConnectWithoutMembersInput!]
@@ -1697,6 +1845,7 @@ input OrganizationCreateNestedManyWithoutOwnerInput {
   connect: [OrganizationWhereUniqueInput!]
   connectOrCreate: [OrganizationCreateOrConnectWithoutOwnerInput!]
   create: [OrganizationCreateWithoutOwnerInput!]
+  createMany: OrganizationCreateManyOwnerInputEnvelope
 }
 
 input OrganizationCreateNestedOneWithoutArtifactsInput {
@@ -1766,9 +1915,12 @@ input OrganizationListRelationFilter {
   some: OrganizationWhereInput
 }
 
-input OrganizationOrderByInput {
+input OrganizationOrderByWithRelationInput {
+  artifacts: ArtifactOrderByRelationAggregateInput
   description: SortOrder
   id: SortOrder
+  members: UserOrderByRelationAggregateInput
+  modelsets: ModelsetOrderByRelationAggregateInput
   name: SortOrder
   ownerId: SortOrder
 }
@@ -1815,6 +1967,7 @@ input OrganizationUpdateManyWithoutOwnerInput {
   connect: [OrganizationWhereUniqueInput!]
   connectOrCreate: [OrganizationCreateOrConnectWithoutOwnerInput!]
   create: [OrganizationCreateWithoutOwnerInput!]
+  createMany: OrganizationCreateManyOwnerInputEnvelope
   delete: [OrganizationWhereUniqueInput!]
   deleteMany: [OrganizationScalarWhereInput!]
   disconnect: [OrganizationWhereUniqueInput!]
@@ -1944,6 +2097,19 @@ input PropertyCreateInput {
   unit: String
 }
 
+input PropertyCreateManyOwnerInput {
+  description: String
+  id: Int
+  name: String!
+  symbol: String
+  unit: String
+}
+
+input PropertyCreateManyOwnerInputEnvelope {
+  data: [PropertyCreateManyOwnerInput!]
+  skipDuplicates: Boolean
+}
+
 input PropertyCreateNestedManyWithoutModelsetsInput {
   connect: [PropertyWhereUniqueInput!]
   connectOrCreate: [PropertyCreateOrConnectWithoutModelsetsInput!]
@@ -1954,6 +2120,7 @@ input PropertyCreateNestedManyWithoutOwnerInput {
   connect: [PropertyWhereUniqueInput!]
   connectOrCreate: [PropertyCreateOrConnectWithoutOwnerInput!]
   create: [PropertyCreateWithoutOwnerInput!]
+  createMany: PropertyCreateManyOwnerInputEnvelope
 }
 
 input PropertyCreateNestedOneWithoutModelsInput {
@@ -2007,21 +2174,27 @@ input PropertyListRelationFilter {
 }
 
 input PropertyModelsOrderByInput {
-  clsMetric: ClassificationMetricOrderByInput
+  clsMetric: ClassificationMetricOrderByWithRelationInput
   createdAt: SortOrder
-  descriptor: DescriptorOrderByInput
+  descriptor: DescriptorOrderByWithRelationInput
   id: SortOrder
   keywords: SortOrder
-  method: MethodOrderByInput
-  modelset: ModelsetOrderByInput
-  property: PropertyOrderByInput
-  regMetric: RegressionMetricOrderByInput
+  method: MethodOrderByWithRelationInput
+  modelset: ModelsetOrderByWithRelationInput
+  property: PropertyOrderByWithRelationInput
+  regMetric: RegressionMetricOrderByWithRelationInput
   updatedAt: SortOrder
 }
 
-input PropertyOrderByInput {
+input PropertyOrderByRelationAggregateInput {
+  _count: SortOrder
+  count: SortOrder
+}
+
+input PropertyOrderByWithRelationInput {
   description: SortOrder
   id: SortOrder
+  modelsets: ModelsetOrderByRelationAggregateInput
   name: SortOrder
   ownerId: SortOrder
   symbol: SortOrder
@@ -2082,6 +2255,7 @@ input PropertyUpdateManyWithoutOwnerInput {
   connect: [PropertyWhereUniqueInput!]
   connectOrCreate: [PropertyCreateOrConnectWithoutOwnerInput!]
   create: [PropertyCreateWithoutOwnerInput!]
+  createMany: PropertyCreateManyOwnerInputEnvelope
   delete: [PropertyWhereUniqueInput!]
   deleteMany: [PropertyScalarWhereInput!]
   disconnect: [PropertyWhereUniqueInput!]
@@ -2179,12 +2353,12 @@ type Query {
   getModelUrls(
     """id of Models"""
     ids: [Int!]!
-    orderBy: [ModelOrderByInput!]
+    orderBy: [NEXUS__UNKNOWN__TYPE!]
   ): [ModelUrl!]!
   method(where: MethodWhereUniqueInput!): Method
   methods(after: MethodWhereUniqueInput, before: MethodWhereUniqueInput, first: Int, last: Int, orderBy: [QueryMethodsOrderByInput!], where: MethodWhereInput): [Method!]!
   model(where: ModelWhereUniqueInput!): Model
-  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [ModelOrderByInput!], where: QueryModelsWhereInput): [Model!]!
+  models(after: ModelWhereUniqueInput, before: ModelWhereUniqueInput, first: Int, last: Int, orderBy: [ModelOrderByWithRelationInput!], where: QueryModelsWhereInput): [Model!]!
   modelset(where: ModelsetWhereUniqueInput!): Modelset
   modelsets(after: ModelsetWhereUniqueInput, before: ModelsetWhereUniqueInput, first: Int, last: Int, orderBy: [QueryModelsetsOrderByInput!], where: ModelsetWhereInput): [Modelset!]!
   organization(where: OrganizationWhereUniqueInput!): Organization
@@ -2298,11 +2472,12 @@ input RegressionMetricCreateWithoutModelInput {
   supplementary: Json
 }
 
-input RegressionMetricOrderByInput {
+input RegressionMetricOrderByWithRelationInput {
   id: SortOrder
   maxAbsError: SortOrder
   meanAbsError: SortOrder
   meanSquareError: SortOrder
+  model: ModelOrderByWithRelationInput
   pValue: SortOrder
   pearsonCorr: SortOrder
   r2: SortOrder
@@ -2491,16 +2666,21 @@ input UserListRelationFilter {
 }
 
 input UserModelsOrderByInput {
-  clsMetric: ClassificationMetricOrderByInput
+  clsMetric: ClassificationMetricOrderByWithRelationInput
   createdAt: SortOrder
-  descriptor: DescriptorOrderByInput
+  descriptor: DescriptorOrderByWithRelationInput
   id: SortOrder
   keywords: SortOrder
-  method: MethodOrderByInput
-  modelset: ModelsetOrderByInput
-  property: PropertyOrderByInput
-  regMetric: RegressionMetricOrderByInput
+  method: MethodOrderByWithRelationInput
+  modelset: ModelsetOrderByWithRelationInput
+  property: PropertyOrderByWithRelationInput
+  regMetric: RegressionMetricOrderByWithRelationInput
   updatedAt: SortOrder
+}
+
+input UserOrderByRelationAggregateInput {
+  _count: SortOrder
+  count: SortOrder
 }
 
 input UserScalarWhereInput {
